@@ -1,0 +1,31 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Env (jangan commit .env asli, .env.example boleh)
+.env
+
+# Source foto asli (resolusi tinggi, belum dikompres) — jangan commit, cuma versi .webp yang dipakai
+assets/img/hero.png
+assets/img/mie ayam*.png
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

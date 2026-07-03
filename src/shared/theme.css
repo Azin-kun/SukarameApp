@@ -1,0 +1,26 @@
+/* Tema Sukarame — port dari Sukarame/app/lib/config/theme.dart & SukarameWeb/index.html.
+   Nilai warna & font HARUS sinkron dengan shared/theme.ts (satu-satunya sumber lain yang boleh menduplikasi ini). */
+:root {
+  --color-bg: #1a0a00;
+  --color-surface: #3d1400;
+  --color-surface-2: #5c2000;
+
+  --color-red: #d32f2f;
+  --color-red-light: #ff5252;
+  --color-red-tint: rgba(211, 47, 47, 0.18);
+
+  --color-yellow: #ffc107;
+  --color-yellow-light: #ffd54f;
+  --color-yellow-tint: rgba(255, 193, 7, 0.15);
+
+  --color-cream: #fff8f0;
+  --color-cream-2: #ffe8d0;
+
+  --color-line: rgba(211, 47, 47, 0.28);
+  --color-line-2: rgba(255, 193, 7, 0.5);
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Poppins', system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}

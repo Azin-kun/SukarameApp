@@ -135,14 +135,16 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Repo GitHub `Azin-kun/SukarameApp` (public — perlu public untuk GitHub Pages gratis)
 - [x] `log.md` ini dibuat
 
-### Fase 1 — Scaffold ⏳
-- [ ] `npm create vite@latest` dengan template React+TypeScript
-- [ ] Install: `react-router-dom`, `@supabase/supabase-js`, `zustand`, `vite-plugin-pwa`
-- [ ] Setup `.env.example` + `.env` (Supabase URL + anon key, ambil dari `Sukarame/.env` — **jangan commit `.env` asli**)
-- [ ] `supabaseClient.ts` — init client
-- [ ] Routing skeleton: `/` (customer layout) dan `/admin/*` (admin layout, belum ada auth guard dulu)
-- [ ] Port tema (warna, font) ke `shared/theme.ts` / CSS variables
-- [ ] Putuskan: CSS Modules polos vs Tailwind — pilih yang mempercepat, catat keputusan di sini
+### Fase 1 — Scaffold ✅
+- [x] `npm create vite@latest` dengan template React+TypeScript
+- [x] Install: `react-router-dom`, `@supabase/supabase-js`, `zustand`, `vite-plugin-pwa`
+- [x] Setup `.env.example` + `.env` (Supabase URL + anon key, ambil dari `Sukarame/.env` — **jangan commit `.env` asli**)
+- [x] `supabaseClient.ts` — init client
+- [x] Routing skeleton: `/` (customer layout) dan `/admin/*` (admin layout, belum ada auth guard dulu)
+- [x] Port tema (warna, font) ke `shared/theme.ts` / CSS variables
+- [x] Putuskan: CSS Modules polos vs Tailwind — pilih yang mempercepat, catat keputusan di sini
+  - **Keputusan: plain CSS + CSS custom properties (variables), CSS Modules untuk scoping per-komponen. Bukan Tailwind.**
+  - Alasan: `SukarameWeb/index.html` sudah punya CSS custom lengkap (animasi, `clamp()`, custom properties) yang akan di-port hampir verbatim di Fase 2 — menerjemahkan itu ke utility classes Tailwind lebih lambat dan berisiko mengubah visual dibanding pakai ulang CSS yang sudah ada. Variabel warna/font global ada di `src/shared/theme.css` (`:root`), disinkronkan manual dengan `src/shared/theme.ts` (dipakai kalau butuh nilai tema di JS/TS, mis. `theme-color` meta atau canvas).
 
 ### Fase 2 — Customer Site ⏳
 - [ ] `HomePage.tsx` — port semua 6 section dari `SukarameWeb/index.html` (copy konten, struktur, responsive)
@@ -198,6 +200,18 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - Diskusi arsitektur di sesi Claude terpisah (project `Sukarame`) menghasilkan keputusan pivot ke unified web/PWA (lihat Bagian 1)
 - Folder `SukarameApp/` dibuat, git init, repo GitHub dibuat
 - `log.md` (file ini) ditulis sebagai rencana lengkap untuk sesi Claude baru yang akan mengerjakan implementasi
+
+### 2026-07-03 — Fase 1: Scaffold selesai
+- Scaffold Vite dibuat di folder sementara (`npm create vite@latest -- --template react-ts`) lalu dipindah ke `SukarameApp/` supaya tidak bentrok dengan `log.md`/`assets/`/`.git` yang sudah ada; boilerplate demo (`App.css`, logo react/vite, `hero.png`, `icons.svg`) dihapus.
+- `package.json` name diganti jadi `sukarame-app`.
+- Dependencies terinstall: `react-router-dom`, `@supabase/supabase-js`, `zustand` (dependencies); `vite-plugin-pwa` (devDependency, belum di-wire ke `vite.config.ts` — itu tugas Fase 6).
+- `.env` + `.env.example` dibuat (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`), nilai staging diambil dari `Sukarame/.env`. `.env` ditambahkan ke `.gitignore` (belum ada aturan itu di `.gitignore` bawaan Vite, cuma `*.local`).
+- `src/shared/supabaseClient.ts` — init client `@supabase/supabase-js` dari env var, throw kalau env kosong.
+- Routing skeleton di `src/App.tsx` (`react-router-dom` v7): `/` → `HomePage`, `/order` → `OrderPage`, `/admin` → `AdminLayout` (nested `<Outlet/>`, index route `AdminHome`) — semua masih placeholder, belum ada auth guard (Fase 3).
+- Tema di-port dari `Sukarame/app/lib/config/theme.dart` & `SukarameWeb/index.html` (`:root` CSS vars) ke `src/shared/theme.css` (CSS variables, di-`@import` dari `src/index.css`) dan `src/shared/theme.ts` (konstanta JS/TS, harus tetap sinkron manual dengan `theme.css`). Font Playfair Display + Poppins di-load via Google Fonts link di `index.html`.
+- Keputusan styling: plain CSS + CSS Modules (bukan Tailwind) — lihat catatan di checklist Fase 1 di atas.
+- Verifikasi: `npm run build` (tsc -b && vite build) sukses, `npm run lint` (oxlint) bersih, dev server jalan dan menyajikan route `/` & `/admin` dengan benar.
+- Belum dikerjakan (menyusul Fase 2+): konten asli HomePage/OrderPage, PWA manifest/icons, CI deploy.
 
 ---
 
