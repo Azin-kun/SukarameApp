@@ -179,10 +179,10 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Service worker: caching strategy (offline fallback minimal untuk halaman customer)
 - [ ] Test "Add to Home Screen" di Android Chrome & iOS Safari — **belum bisa dicek dari sesi ini** (butuh device fisik/emulator dengan UI install prompt), perlu dicoba manual oleh user setelah deploy (Fase 7).
 
-### Fase 7 — CI/CD & Deploy ⏳ (workflow siap, belum di-push/deploy — perlu izin user)
+### Fase 7 — CI/CD & Deploy ✅
 - [x] `.github/workflows/deploy.yml`: `npm ci` → `npm run build` → deploy `dist/` ke GitHub Pages (pakai `actions/deploy-pages`)
-- [ ] Aktifkan GitHub Pages di repo (source: GitHub Actions) — **butuh konfirmasi user**, belum dilakukan
-- [ ] Verifikasi live URL jalan di HTTPS (wajib untuk service worker) — menyusul setelah push+deploy pertama
+- [x] Aktifkan GitHub Pages di repo (source: GitHub Actions) — `gh api repos/Azin-kun/SukarameApp/pages -X POST -f build_type=workflow`
+- [x] Verifikasi live URL jalan di HTTPS — **LIVE**: https://azin-kun.github.io/SukarameApp/
 
 ### Fase 8 — Cutover ⏳
 - [ ] Feature parity check vs `Sukarame/app/` (Flutter) dan `SukarameWeb/`
@@ -286,14 +286,20 @@ Sebelum implementasi, riset referensi Flutter + skema Supabase dilakukan lewat 3
   - **Bug ditemukan & diperbaiki lewat testing nyata** (bukan keliatan dari baca kode): hasil `history.replaceState` awalnya menghasilkan double-slash (`/SukarameApp//admin/pos`) karena `location.pathname` (berakhiran `/`) + `redirect` (berawalan `/`) digabung langsung. Diperbaiki dengan `.replace(/\/$/, '')` sebelum concat.
 - `.github/workflows/deploy.yml`: trigger `push` ke `main` + `workflow_dispatch` manual, job `build` (`npm ci` → `npm run build` → `actions/configure-pages` → `actions/upload-pages-artifact`) lalu job `deploy` (`actions/deploy-pages`) — pola resmi GitHub untuk static site, YAML divalidasi via `js-yaml`.
 - **Verifikasi nyata**: build+lint bersih. Setelah base path diaktifkan, `dist/index.html`/`manifest.webmanifest`/`sw.js` dicek langsung — semua path (`favicon`, `apple-touch-icon`, JS/CSS bundle, `manifest` link, `start_url`/`scope`, `navigateFallback`) sudah ter-prefix `/SukarameApp/` dengan benar. Redirect 404→index diuji end-to-end pakai Playwright di atas `npm run preview` (dengan base path aktif): `/SukarameApp/?redirect=%2Forder` → URL akhir `/SukarameApp/order` dengan konten OrderPage lengkap ✅; `/SukarameApp/?redirect=%2Fadmin%2Fpos` → benar di-guard ke `/SukarameApp/admin/login` (karena belum login) ✅.
-- **BELUM DILAKUKAN, butuh keputusan/izin user** (aksi ini visible ke publik & mengubah state remote, jadi sengaja tidak dilakukan otomatis):
-  1. **Push 7 commit lokal ke `origin/main`** — repo `Azin-kun/SukarameApp` di GitHub saat ini masih cuma berisi commit awal (`Inisiasi...`); seluruh Fase 1–7 baru ada di lokal. Push ke `main` juga otomatis men-trigger workflow deploy (karena trigger-nya `on: push: branches: [main]`).
-  2. **Aktifkan GitHub Pages** di Settings repo dengan source **"GitHub Actions"** (dicek lewat `gh api repos/Azin-kun/SukarameApp/pages` → belum ada/404) — wajib sebelum job `deploy` bisa sukses, workflow akan gagal di step `actions/deploy-pages` kalau Pages belum diaktifkan dengan source yang benar.
-  3. Setelah 1 & 2: verifikasi live URL `https://azin-kun.github.io/SukarameApp/` jalan di HTTPS, cek PWA installability & "Add to Home Screen" sungguhan (menyusul item pending dari Fase 6).
+- **Deploy pertama, dengan izin eksplisit user** (commit+push serta aktivasi GitHub Pages ditanyakan dulu lewat `AskUserQuestion`, tidak dilakukan otomatis karena visible ke publik & mengubah state remote):
+  1. Push 8 commit (Fase 1–7) ke `origin/main` — sebelumnya repo GitHub cuma punya commit `Inisiasi...`.
+  2. `gh api repos/Azin-kun/SukarameApp/pages -X POST -f build_type=workflow` — aktifkan Pages dengan source GitHub Actions.
+  3. Workflow pertama **sukses** (`build` 25s, `deploy` 10s), tapi live URL **crash total** (blank page, `pageerror`) saat dicek pakai Playwright.
+- **🔴 Bug produksi ditemukan lewat verifikasi live URL sungguhan** (bukan cuma cek "workflow hijau"): `.env` sengaja tidak ter-commit (keputusan Fase 1, demi keamanan) — akibatnya `npm run build` di GitHub Actions jalan TANPA `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`, dan `supabaseClient.ts` (Fase 1) `throw` di module-load time begitu env kosong → seluruh app crash sebelum render apa pun. Workflow "sukses" secara CI (build tidak error, artifact ke-upload, deploy ke-publish) padahal situs hasilnya benar-benar rusak — bukti kenapa "cek workflow hijau" saja tidak cukup, harus buka situsnya.
+  - **Fix** (dengan izin eksplisit user lewat `AskUserQuestion` lagi, karena menulis secret ke repo adalah aksi baru di luar yang sudah disetujui): 2 nilai (URL + anon key publik — sama seperti yang sudah lama ter-embed di `SukarameWeb/index.html`) disimpan sebagai **GitHub Actions secrets** (`gh secret set`), `deploy.yml` step build diberi `env:` yang mengambil dari `secrets.VITE_SUPABASE_URL`/`secrets.VITE_SUPABASE_ANON_KEY`. Commit fix → push → workflow ke-2 sukses.
+- **Verifikasi live URL final (Playwright langsung ke `https://azin-kun.github.io/SukarameApp/`, bukan lokal)**: homepage render penuh dengan data live ✅, deep-link `/order` (uji nyata SPA-fallback di GitHub Pages sungguhan, bukan simulasi) render lengkap ✅, service worker `state: activated` ✅, **0 console error**.
+- Belum dicoba (perlu device fisik): "Add to Home Screen" Android/iOS — bisa dicoba sekarang karena URL HTTPS asli sudah live.
 
 ---
 
 ## 7. Kontak & Referensi Lain
+- **Live URL (sejak 2026-07-03): https://azin-kun.github.io/SukarameApp/**
 - Backend/Supabase project: `Sukarame/` (folder sebelah, jangan diubah kecuali memang perlu migration baru)
 - Website lama (untuk referensi konten/desain): `SukarameWeb/`
 - Memory project (Claude): `project_sukarame.md` — berisi ringkasan status semua sub-project client Sukarame
+- GitHub Actions secrets (repo `Azin-kun/SukarameApp`): `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` — dipakai `deploy.yml` saat build, wajib di-set ulang kalau anon key pernah di-rotate.
