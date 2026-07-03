@@ -146,11 +146,11 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
   - **Keputusan: plain CSS + CSS custom properties (variables), CSS Modules untuk scoping per-komponen. Bukan Tailwind.**
   - Alasan: `SukarameWeb/index.html` sudah punya CSS custom lengkap (animasi, `clamp()`, custom properties) yang akan di-port hampir verbatim di Fase 2 — menerjemahkan itu ke utility classes Tailwind lebih lambat dan berisiko mengubah visual dibanding pakai ulang CSS yang sudah ada. Variabel warna/font global ada di `src/shared/theme.css` (`:root`), disinkronkan manual dengan `src/shared/theme.ts` (dipakai kalau butuh nilai tema di JS/TS, mis. `theme-color` meta atau canvas).
 
-### Fase 2 — Customer Site ⏳
-- [ ] `HomePage.tsx` — port semua 6 section dari `SukarameWeb/index.html` (copy konten, struktur, responsive)
-- [ ] `OrderPage.tsx` — port cart + modal + RPC `create_web_order` + redirect WA dari `SukarameWeb/order.html`
-- [ ] Copy aset WebP dari `SukarameWeb/assets/img/` ke `public/`
-- [ ] Verifikasi tampilan mobile & desktop cocok dengan versi lama
+### Fase 2 — Customer Site ✅
+- [x] `HomePage.tsx` — port semua 6 section dari `SukarameWeb/index.html` (copy konten, struktur, responsive)
+- [x] `OrderPage.tsx` — port cart + modal + RPC `create_web_order` + redirect WA dari `SukarameWeb/order.html`
+- [x] Copy aset WebP dari `SukarameWeb/assets/img/` ke `public/`
+- [x] Verifikasi tampilan mobile & desktop cocok dengan versi lama
 
 ### Fase 3 — Admin Auth & Shell ⏳
 - [ ] `LoginPage.tsx` — Supabase Auth (email/password)
@@ -212,6 +212,16 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - Keputusan styling: plain CSS + CSS Modules (bukan Tailwind) — lihat catatan di checklist Fase 1 di atas.
 - Verifikasi: `npm run build` (tsc -b && vite build) sukses, `npm run lint` (oxlint) bersih, dev server jalan dan menyajikan route `/` & `/admin` dengan benar.
 - Belum dikerjakan (menyusul Fase 2+): konten asli HomePage/OrderPage, PWA manifest/icons, CI deploy.
+
+### 2026-07-03 — Fase 2: Customer Site selesai
+- Aset WebP + `logo.jpg` di-copy dari `assets/img/` (Fase 0) ke `public/img/` — di-refer sebagai `/img/*.webp` di kode.
+- `src/shared/format.ts` (`formatRupiah`) dan `src/customer/menuData.ts` (data menu 4 kategori: mie, goreng, tambahan, minuman — dipakai bareng oleh HomePage & OrderPage supaya harga/nama tidak duplikat).
+- `HomePage.tsx` + `HomePage.css`: port 1:1 dari `SukarameWeb/index.html` (738 baris) — nav solid/hide-on-scroll, side-dots, 6 section snap-scroll (hero, cerita, signature, carousel menu otomatis 5 detik, menu lengkap dgn tab kategori, lokasi+maps), lightbox foto, semua state (scroll, carousel, tab, lightbox, mini-map overlay) di-translate ke React hooks — logic asli (index section, delay animasi, dsb) dipertahankan persis, bukan didesain ulang.
+- `OrderPage.tsx` + `OrderPage.css`: port 1:1 dari `SukarameWeb/order.html` (516 baris) — cart state, kategori tab, qty control, bottom bar, modal konfirmasi + recap, toast validasi, submit ke RPC `create_web_order` via `supabase.rpc()` (fire-and-forget, tidak pernah blok alur WA), redirect WhatsApp, success screen.
+- Class CSS asli (`.nav`, `.nav-brand`, dst.) dipakai lagi apa adanya (plain CSS, bukan Tailwind, sesuai keputusan Fase 1) — tapi `.nav`/`.nav-brand` di OrderPage di-rename jadi `.order-nav`/`.order-nav-brand` supaya tidak bentrok dengan HomePage.css (keduanya global CSS, bukan CSS Modules, jadi nama generik yang dipakai 2 file bisa saling override).
+- Variabel warna/font lama (`--esp`, `--brn`, `--red`, `--ylw`, `--crm`, `--ff`, `--fs`, dst.) di-alias ke variabel kanonik `shared/theme.css` lewat blok `:root` lokal di `.home-page`/`.order-page`, supaya CSS asli bisa di-paste hampir tanpa ubah nama selector.
+- **Verifikasi**: `npm run build` + `npm run lint` bersih. Instal Playwright (Chromium) lokal, jalankan dev server, screenshot desktop (1440×900) & mobile (390×844) untuk hero/cerita/menu/lokasi/order/cart/modal/toast/success — semua render sesuai desain asli setelah transisi CSS selesai (beberapa screenshot awal sempat menangkap mid-transition/fade, dikonfirmasi bukan bug lewat re-capture dengan delay lebih lama).
+- **Temuan**: RPC `create_web_order` return **404** di Supabase staging (`tfsljifxmvptzkjrorol.supabase.co`) — bukan bug di port ini (anon key & tabel lain jalan normal, mis. `catalog_items` return 200), kemungkinan migration `0014_core_web_order.sql` belum ter-apply ke staging. Tidak mem-blok alur customer (WA redirect tetap jalan, sesuai desain asli yang fire-and-forget), tapi notifikasi Telegram ke owner untuk pesanan web kemungkinan belum aktif — perlu dicek di sesi project `Sukarame` (backend), bukan di sini.
 
 ---
 
