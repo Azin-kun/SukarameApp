@@ -1,0 +1,94 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  background: var(--color-bg);
+  color: var(--color-cream);
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-line);
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  padding: 1.4rem 1.2rem;
+  border-bottom: 1px solid var(--color-line);
+  font-family: var(--font-heading);
+  color: var(--color-yellow);
+  font-weight: 700;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  gap: 0.15rem;
+  overflow-y: auto;
+}
+
+.navLink {
+  display: block;
+  padding: 0.65rem 0.8rem;
+  border-radius: 6px;
+  color: rgba(255, 248, 240, 0.65);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.navLink:hover {
+  background: var(--color-surface-2);
+  color: var(--color-cream);
+}
+.navLinkActive {
+  background: var(--color-red);
+  color: var(--color-cream);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.greeting {
+  font-size: 0.95rem;
+}
+.greeting strong {
+  color: var(--color-yellow);
+}
+
+.logoutBtn {
+  background: transparent;
+  border: 1px solid var(--color-line);
+  color: rgba(255, 248, 240, 0.7);
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.logoutBtn:hover {
+  border-color: var(--color-red);
+  color: var(--color-cream);
+}
+
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}

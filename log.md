@@ -152,11 +152,11 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Copy aset WebP dari `SukarameWeb/assets/img/` ke `public/`
 - [x] Verifikasi tampilan mobile & desktop cocok dengan versi lama
 
-### Fase 3 — Admin Auth & Shell ⏳
-- [ ] `LoginPage.tsx` — Supabase Auth (email/password)
-- [ ] `PinPage.tsx` — RPC `verify_pin`/`set_pin`
-- [ ] Auth guard untuk semua route `/admin/*` (redirect ke login kalau belum auth)
-- [ ] `AdminLayout.tsx` — nav/sidebar ke semua modul admin
+### Fase 3 — Admin Auth & Shell ✅
+- [x] `LoginPage.tsx` — Supabase Auth (email/password)
+- [x] `PinPage.tsx` — RPC `verify_pin`/`set_pin`
+- [x] Auth guard untuk semua route `/admin/*` (redirect ke login kalau belum auth)
+- [x] `AdminLayout.tsx` — nav/sidebar ke semua modul admin
 
 ### Fase 4 — POS Core ⏳
 - [ ] POS screen: kategori + katalog dari Supabase, cart, checkout
@@ -222,6 +222,15 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - Variabel warna/font lama (`--esp`, `--brn`, `--red`, `--ylw`, `--crm`, `--ff`, `--fs`, dst.) di-alias ke variabel kanonik `shared/theme.css` lewat blok `:root` lokal di `.home-page`/`.order-page`, supaya CSS asli bisa di-paste hampir tanpa ubah nama selector.
 - **Verifikasi**: `npm run build` + `npm run lint` bersih. Instal Playwright (Chromium) lokal, jalankan dev server, screenshot desktop (1440×900) & mobile (390×844) untuk hero/cerita/menu/lokasi/order/cart/modal/toast/success — semua render sesuai desain asli setelah transisi CSS selesai (beberapa screenshot awal sempat menangkap mid-transition/fade, dikonfirmasi bukan bug lewat re-capture dengan delay lebih lama).
 - **Temuan**: RPC `create_web_order` return **404** di Supabase staging (`tfsljifxmvptzkjrorol.supabase.co`) — bukan bug di port ini (anon key & tabel lain jalan normal, mis. `catalog_items` return 200), kemungkinan migration `0014_core_web_order.sql` belum ter-apply ke staging. Tidak mem-blok alur customer (WA redirect tetap jalan, sesuai desain asli yang fire-and-forget), tapi notifikasi Telegram ke owner untuk pesanan web kemungkinan belum aktif — perlu dicek di sesi project `Sukarame` (backend), bukan di sini.
+
+### 2026-07-03 — Fase 3: Admin Auth & Shell selesai
+- `src/admin/auth/authStore.ts` (Zustand) — port 1:1 dari `Sukarame/app/lib/providers/auth_provider.dart`: state machine `initial → unauthenticated → needsPin → authenticated`, urutan panggilan sama persis (`signInWithPassword` → fetch `staff_profiles` (+`staff_roles(branch_id)`) → RPC `verify_pin` → fetch `branches` limit 1 → `authenticated`). `changePin`/`signOut` juga di-port, belum dipakai di UI (menyusul Fase 5 — Settings).
+- `LoginPage.tsx` + `.module.css` — port dari `login_screen.dart`: email/password, toggle show/hide password, pesan error dari Supabase Auth ditampilkan apa adanya (sama seperti versi Flutter yang juga tidak melokalisasi pesan error).
+- `PinPage.tsx` + `.module.css` — port dari `pin_screen.dart`: numpad 3 kolom, 6 dot indikator, auto-submit begitu 6 digit terisi, tombol "Keluar" (sign out) di header.
+- `RequireAuth.tsx` — guard component (bukan router-level `redirect` seperti `go_router`, karena react-router v6/v7 dipakai secara declarative) yang mem-bungkus route `/admin`: redirect ke `/admin/login`/`/admin/pin` sesuai `phase`, mengikuti logic `redirect` di `Sukarame/app/lib/core/router.dart`. `LoginPage`/`PinPage` sendiri juga py guard balik (kalau sudah `needsPin`/`authenticated`, redirect maju) — total logic redirect sama dengan versi Flutter.
+- `AdminLayout.tsx` + `.module.css` — shell baru (sidebar persisten + topbar nama staff/Keluar), **beda dari Flutter** yang push-navigation per layar tanpa shell tetap — ini keputusan sadar sesuai rencana struktur folder di Bagian 3 (bukan redesain alur bisnis, cuma pola navigasi web yang lebih umum dibanding mobile). Sidebar berisi link ke semua 9 modul (paritas dgn grid `home_screen.dart`); `AdminHome.tsx` disederhanakan jadi teks salam saja (grid card dihilangkan karena redundan dengan sidebar yang sudah persisten).
+- Ditambah `<Route path="*">` fallback di dalam layout `/admin` supaya AdminLayout (sidebar+topbar) tetap tampil dengan pesan "belum tersedia" kalau user klik modul yang belum dibangun (Fase 4/5) — tanpa fallback ini halaman jadi blank kosong total karena react-router tidak match apa pun.
+- **Verifikasi**: `npm run build`/`lint` bersih. Browser test via Playwright: `/admin` & `/admin/pin` tanpa sesi redirect ke login ✅, login salah menampilkan pesan error dari Supabase (`Invalid login credentials`) ✅, transisi `needsPin`→PIN page dan `authenticated`→dashboard displet lewat debug hook sementara (dihapus sebelum commit, tidak ikut ke git) karena tidak ada password akun staff asli yang tersedia di sesi ini — alur PIN/RPC (`verify_pin`) sendiri sudah diverifikasi lewat pembacaan kode, belum lewat login staff sungguhan end-to-end (perlu dicoba manual oleh user dengan kredensial asli).
 
 ---
 
