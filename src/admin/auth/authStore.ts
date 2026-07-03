@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { supabase } from '../../shared/supabaseClient'
+import { getErrorMessage } from '../../shared/errors'
 
 // Port dari Sukarame/app/lib/providers/auth_provider.dart — state machine dan
 // urutan panggilan (signIn -> verifyPin -> branches) dipertahankan persis.
@@ -117,7 +118,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       set({ branchId: branchRow.id, phase: 'authenticated' })
       return true
     } catch (e) {
-      set({ error: e instanceof Error ? e.message : String(e) })
+      set({ error: getErrorMessage(e) })
       return false
     }
   },

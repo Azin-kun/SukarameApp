@@ -1,0 +1,21 @@
+/* Cetak struk lewat window.print() ke printer thermal yang terdaftar
+   sebagai printer sistem OS (bukan Bluetooth/ESC-POS SDK langsung) —
+   lihat log.md Fase 4. Hanya .receipt-print yang tampil saat print. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .receipt-print,
+  .receipt-print * {
+    visibility: visible;
+  }
+  .receipt-print {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 58mm;
+    background: #fff !important;
+    color: #000 !important;
+    padding: 2mm;
+  }
+}

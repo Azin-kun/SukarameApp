@@ -158,11 +158,11 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Auth guard untuk semua route `/admin/*` (redirect ke login kalau belum auth)
 - [x] `AdminLayout.tsx` — nav/sidebar ke semua modul admin
 
-### Fase 4 — POS Core ⏳
-- [ ] POS screen: kategori + katalog dari Supabase, cart, checkout
-- [ ] Transaksi tersimpan ke `transactions`/`transaction_items`
-- [ ] Struk: layout HTML khusus + CSS `@media print`, trigger `window.print()`
-- [ ] **Cek fisik**: printer thermal yang dipakai kasir kompatibel dengan print-via-OS-driver (bukan cuma Bluetooth ESC/POS) — kalau tidak, perlu cari alternatif (mis. printer network/USB yang bisa di-set jadi printer sistem)
+### Fase 4 — POS Core ✅ (kecuali cek fisik printer)
+- [x] POS screen: kategori + katalog dari Supabase, cart, checkout
+- [x] Transaksi tersimpan ke `transactions`/`transaction_items`
+- [x] Struk: layout HTML khusus + CSS `@media print`, trigger `window.print()`
+- [ ] **Cek fisik**: printer thermal yang dipakai kasir kompatibel dengan print-via-OS-driver (bukan cuma Bluetooth ESC/POS) — kalau tidak, perlu cari alternatif (mis. printer network/USB yang bisa di-set jadi printer sistem). **Belum bisa dicek dari sesi ini** (butuh printer fisik) — perlu dicoba manual oleh user.
 
 ### Fase 5 — Modul Admin Lainnya ⏳
 - [ ] Tables/Booking (`fnb_available_tables`, `create_public_booking`, tabel `bookings`)
@@ -231,6 +231,16 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - `AdminLayout.tsx` + `.module.css` — shell baru (sidebar persisten + topbar nama staff/Keluar), **beda dari Flutter** yang push-navigation per layar tanpa shell tetap — ini keputusan sadar sesuai rencana struktur folder di Bagian 3 (bukan redesain alur bisnis, cuma pola navigasi web yang lebih umum dibanding mobile). Sidebar berisi link ke semua 9 modul (paritas dgn grid `home_screen.dart`); `AdminHome.tsx` disederhanakan jadi teks salam saja (grid card dihilangkan karena redundan dengan sidebar yang sudah persisten).
 - Ditambah `<Route path="*">` fallback di dalam layout `/admin` supaya AdminLayout (sidebar+topbar) tetap tampil dengan pesan "belum tersedia" kalau user klik modul yang belum dibangun (Fase 4/5) — tanpa fallback ini halaman jadi blank kosong total karena react-router tidak match apa pun.
 - **Verifikasi**: `npm run build`/`lint` bersih. Browser test via Playwright: `/admin` & `/admin/pin` tanpa sesi redirect ke login ✅, login salah menampilkan pesan error dari Supabase (`Invalid login credentials`) ✅, transisi `needsPin`→PIN page dan `authenticated`→dashboard displet lewat debug hook sementara (dihapus sebelum commit, tidak ikut ke git) karena tidak ada password akun staff asli yang tersedia di sesi ini — alur PIN/RPC (`verify_pin`) sendiri sudah diverifikasi lewat pembacaan kode, belum lewat login staff sungguhan end-to-end (perlu dicoba manual oleh user dengan kredensial asli).
+
+### 2026-07-03 — Fase 4: POS Core selesai
+- `src/admin/pos/cartStore.ts` (Zustand) — port 1:1 dari `Sukarame/app/lib/providers/cart_provider.dart`: `add`/`remove`/`clear`/`checkout`. Urutan insert (`transactions` → `transaction_items` → update `fnb_tables` kalau ada meja → `transaction_payments`) dan **nilai `amount` di `transaction_payments` = total transaksi (bukan uang tunai yang diterima kasir)** dipertahankan persis — kolom itu dicek oleh trigger DB `fn_guard_payment` (`0003_core_transactions.sql`) yang men-set `status='completed'` otomatis kalau `sum(amount) = total`, dan akan `raise exception` "Overpayment" kalau nilainya melebihi total. Kembalian tunai murni tampilan UI, tidak pernah dikirim ke DB — sama seperti versi Flutter.
+- `PosPage.tsx` — port dari `pos_screen.dart`+`catalog_tile.dart`: fetch `categories`/`catalog_items` (`is_active=true`) dari Supabase saat mount, tab kategori, tile item dengan tombol +/− (qty inline), badge jumlah di header, floating button total saat cart tidak kosong, drawer keranjang (port `cart_bottom_sheet.dart`) dengan tombol "Lanjut Bayar" ke `/admin/pos/checkout`.
+- `CheckoutPage.tsx` — port dari `checkout_screen.dart`: metode bayar (cash/qris/transfer), validasi "Uang kurang" untuk cash, hitung kembalian live, snapshot item+total SEBELUM panggil `checkout()` (karena cart di-`clear()` otomatis setelah sukses) supaya struk tetap bisa menampilkan isi pesanan.
+- `ReceiptModal.tsx` + `receiptPrint.css` — struk (port teks dari `_buildReceiptText()` di `receipt_dialog.dart`, termasuk tombol share WhatsApp) + tombol "Cetak Struk" yang panggil `window.print()`. CSS `@media print` global (bukan CSS Module — perlu selector `body *` yang menjangkau seluruh halaman) menyembunyikan semua elemen KECUALI `.receipt-print`, lebar dibatasi 58mm meniru kertas thermal.
+- Routing: `/admin/pos` dan `/admin/pos/checkout` ditambah sebagai child route `/admin` (di antara `index` dan `path="*"` fallback dari Fase 3).
+- **Bug ditemukan & diperbaiki**: pesan error di `authStore.ts` (Fase 3) dan `cartStore.ts` menampilkan literal `"[object Object]"` alih-alih pesan asli, karena `PostgrestError` dari `@supabase/supabase-js` bukan instance `Error` bawaan JS sehingga `e instanceof Error` selalu `false`. Diperbaiki dengan helper baru `src/shared/errors.ts` (`getErrorMessage`) yang cek properti `.message` langsung — dipakai di kedua store. Ditemukan lewat verifikasi manual RLS-denied insert (lihat di bawah), bukan lewat code review saja.
+- **Verifikasi**: `npm run build`/`lint` bersih. Playwright (dengan `branchId`/`profile` di-inject manual via debug hook sementara — dihapus sebelum commit — karena RLS `categories`/`catalog_items` memang terbuka untuk `anon`/tidak perlu login, tapi insert ke `transactions`/`transaction_items`/`transaction_payments` mensyaratkan role `authenticated`+`is_staff()` yang tidak bisa didapat tanpa kredensial staff asli): kategori+katalog **live dari Supabase staging** ter-load benar (13 item, 4 kategori, harga cocok seed data) ✅, tambah/kurang qty di tile & drawer ✅, "Lanjut Bayar" → checkout ✅, validasi "Uang kurang" ✅, hitung kembalian ✅, insert transaksi dengan `branchId` palsu correctly ditolak Postgres (`invalid input syntax for type uuid`) dan pesannya tampil jelas ke user (bukti fix error message di atas) ✅.
+- **Belum diverifikasi end-to-end** (butuh login staff asli + transaksi sukses sungguhan): tampilan `ReceiptModal` setelah checkout sukses, isi print-preview struk fisik, dan **cek fisik printer thermal** (item checklist yang memang dari awal ditandai perlu verifikasi manual di luar sesi Claude).
 
 ---
 

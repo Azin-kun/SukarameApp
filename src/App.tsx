@@ -8,6 +8,8 @@ import LoginPage from './admin/auth/LoginPage'
 import PinPage from './admin/auth/PinPage'
 import RequireAuth from './admin/auth/RequireAuth'
 import { useAuthStore } from './admin/auth/authStore'
+import PosPage from './admin/pos/PosPage'
+import CheckoutPage from './admin/pos/CheckoutPage'
 
 export default function App() {
   const init = useAuthStore((s) => s.init)
@@ -26,6 +28,8 @@ export default function App() {
         <Route element={<RequireAuth />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminHome />} />
+            <Route path="pos" element={<PosPage />} />
+            <Route path="pos/checkout" element={<CheckoutPage />} />
             <Route path="*" element={<p>Modul ini belum tersedia — menyusul di fase berikutnya.</p>} />
           </Route>
         </Route>
