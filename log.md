@@ -301,6 +301,14 @@ Sebelum implementasi, riset referensi Flutter + skema Supabase dilakukan lewat 3
 - **Fix**: migration baru `Sukarame/supabase/core/migrations/0015_core_branches_rls.sql` (policy `branches_read`, select, authenticated, `is_staff()`) — dibuat & diterapkan ke staging lewat `python scripts/apply.py` di sesi ini (dengan izin eksplisit user), commit+push ke repo `Sukarame` terpisah. Detail lengkap ada di `Sukarame/log.md` (2026-07-03).
 - **Belum diverifikasi**: user perlu coba login PIN lagi untuk konfirmasi fix ini benar-benar menyelesaikan masalah.
 
+### 2026-07-03 — Fix: tampilan admin tidak responsive di mobile
+- User melaporkan seluruh area `/admin/*` tidak responsive di HP. Direproduksi dengan Playwright viewport 375px (debug hook sementara untuk auth, seperti biasa — dihapus sebelum commit).
+- **Root cause utama**: `AdminLayout.module.css` — sidebar `width: 220px` di dalam `.shell { display:flex }` **tanpa media query sama sekali** sejak Fase 3. Di layar 375px, sidebar sendirian makan ~59% lebar, sisa konten cuma dapat ~120px — bikin semua halaman admin (judul+tombol header, card menu POS, dst.) tumpang tindih/terpotong parah.
+- **Fix struktural**: `AdminLayout.tsx`/`.module.css` — sidebar jadi off-canvas drawer di ≤768px (translateX + backdrop overlay), dipicu tombol hamburger baru di topbar; topbar/greeting/content dapat padding & ellipsis yang lebih pas untuk layar sempit. Di desktop (>768px) tidak berubah sama sekali.
+- **Verifikasi bertahap** (bukan asumsi): setelah fix sidebar SAJA, di-screenshot ulang semua 10 route admin (`Dashboard`, `Kasir POS`, `Meja`, `Reservasi`, `Shift`, `Transaksi`, `Laporan`, `Stok`, `Karyawan`, `Pengaturan`) — ternyata hampir semua langsung rapi karena penyebab utamanya memang lebar konten yang kepotong, bukan CSS per-halaman yang salah satu-satu.
+- **Bug per-halaman yang tetap ketemu & diperbaiki**: `WebsiteCmsPage.module.css` — grid tema warna 2 kolom (`.themeGrid`) + input warna di dalam `.colorRow` (flex) meng-overflow horizontal di ≤480px, karena default `min-width:auto` pada flex/grid item (bukan `0`) mencegah `<input>` menyusut di bawah lebar kontennya (`#3D1400`, `rgba(...)`, dst. terpotong). Diperbaiki dengan `min-width:0` pada `.field`/`.colorRow`/`.colorRow input`, plus `.themeGrid` collapse ke 1 kolom di ≤480px.
+- Dicek otomatis: 0 horizontal-overflow di ke-10 route admin pada viewport 375px setelah kedua fix.
+
 ---
 
 ## 7. Kontak & Referensi Lain

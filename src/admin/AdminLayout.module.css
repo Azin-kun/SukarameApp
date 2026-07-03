@@ -14,6 +14,10 @@
   flex-direction: column;
 }
 
+.backdrop {
+  display: none;
+}
+
 .brand {
   padding: 1.4rem 1.2rem;
   border-bottom: 1px solid var(--color-line);
@@ -62,12 +66,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--color-line);
 }
 
+.menuBtn {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 .greeting {
+  flex: 1;
+  min-width: 0;
   font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .greeting strong {
   color: var(--color-yellow);
@@ -81,6 +104,8 @@
   border-radius: 4px;
   font-size: 0.75rem;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .logoutBtn:hover {
   border-color: var(--color-red);
@@ -91,4 +116,39 @@
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
+  min-width: 0;
+}
+
+/* Mobile: sidebar jadi off-canvas drawer, dipicu tombol hamburger di topbar */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 400;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+  }
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 390;
+  }
+  .menuBtn {
+    display: block;
+  }
+  .topbar {
+    padding: 0.85rem 1rem;
+  }
+  .greeting {
+    font-size: 0.85rem;
+  }
+  .content {
+    padding: 1rem;
+  }
 }
