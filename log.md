@@ -173,11 +173,11 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Shift (buka/tutup shift kasir)
 - [x] Settings termasuk **CMS**: form edit `website_sections` & `website_theme` yang langsung mempengaruhi `HomePage.tsx` (fetch dari tabel yang sama)
 
-### Fase 6 — PWA Polish ⏳
-- [ ] `vite-plugin-pwa`: manifest.json (nama, icon, theme_color, display: standalone)
-- [ ] Icon PWA — reuse `Sukarame/app/assets/icon/app_icon.png` (sudah ada, dari logo asli)
-- [ ] Service worker: caching strategy (offline fallback minimal untuk halaman customer)
-- [ ] Test "Add to Home Screen" di Android Chrome & iOS Safari
+### Fase 6 — PWA Polish ✅ (kecuali cek fisik Add to Home Screen)
+- [x] `vite-plugin-pwa`: manifest.json (nama, icon, theme_color, display: standalone)
+- [x] Icon PWA — reuse `Sukarame/app/assets/icon/app_icon.png` (sudah ada, dari logo asli)
+- [x] Service worker: caching strategy (offline fallback minimal untuk halaman customer)
+- [ ] Test "Add to Home Screen" di Android Chrome & iOS Safari — **belum bisa dicek dari sesi ini** (butuh device fisik/emulator dengan UI install prompt), perlu dicoba manual oleh user setelah deploy (Fase 7).
 
 ### Fase 7 — CI/CD & Deploy ⏳
 - [ ] `.github/workflows/deploy.yml`: `npm ci` → `npm run build` → deploy `dist/` ke GitHub Pages (pakai `actions/deploy-pages`)
@@ -269,6 +269,14 @@ Sebelum implementasi, riset referensi Flutter + skema Supabase dilakukan lewat 3
 - **7 modul lain** (Tables/Booking/Transactions/Reports/Stock/Staff/Shift): karena RLS-nya mensyaratkan `authenticated`+`is_staff()` (tidak bisa didapat tanpa kredensial staff asli di sesi ini — sama seperti Fase 3/4), verifikasi dilakukan dengan `branchId`/`profile` di-inject manual via debug hook sementara (dihapus sebelum commit, tidak ikut git): semua halaman render tanpa crash, pesan error Postgres tampil jelas (bukti `getErrorMessage` dari Fase 4 bekerja konsisten di semua store baru), form/dialog (buka shift, ganti PIN, reservasi baru, edit stok) berfungsi, filter periode Laporan berpindah dengan benar, sidebar nav aktif menyorot halaman yang benar.
 - **Belum diverifikasi end-to-end** (butuh kredensial staff asli): insert/update sungguhan ke `fnb_tables`/`bookings`/`transactions`/`inventory_items`/`staff_shifts`/`staff_pins`, dan penyimpanan sungguhan lewat `WebsiteCmsPage` (butuh permission `core.website.manage`) — perlu dicoba manual oleh user.
 - Catatan non-blocking: build menghasilkan 1 chunk JS >500KB (bundle admin makin besar seiring modul bertambah) — belum masalah fungsional, tapi code-splitting (`React.lazy` per route admin) bisa jadi optimasi di Fase 6/7 kalau ukuran bundle mulai terasa di jaringan lambat.
+
+### 2026-07-03 — Fase 6: PWA Polish selesai
+- Icon: dipakai tool resmi ekosistem `vite-plugin-pwa`, `@vite-pwa/assets-generator` (preset `minimal`), dari source `Sukarame/app/assets/icon/app_icon.png` (1024×1024) — generate otomatis `pwa-64x64.png`, `pwa-192x192.png`, `pwa-512x512.png`, `maskable-icon-512x512.png` (dengan padding safe-zone yang benar), `apple-touch-icon-180x180.png`, `favicon.ico`. Source disimpan di `pwa-assets/icon.png` (di-commit, hanya ~1MB, supaya bisa regenerate kalau logo berubah) — hasil generate dipindah ke `public/` (root, bukan `public/icons/` seperti draf awal di Bagian 3, karena path itu yang otomatis dipakai tool & manifest, lebih simpel daripada override prefix).
+- `vite.config.ts`: `VitePWA()` — `registerType: 'autoUpdate'`, manifest (nama "Mie Ayam Sukarame", `display: standalone`, `theme_color`/`background_color: #1A0A00` konsisten dengan tema, 4 icon termasuk maskable).
+- Service worker (`workbox`, strategi `generateSW` bawaan): `globPatterns` diperluas mencakup gambar (`webp`/`png`) & font (`woff2`), bukan cuma js/css/html default — supaya halaman customer (foto menu, dsb.) betul-betul kepakai offline, bukan cuma app-shell kosong. `navigateFallback: '/index.html'` untuk SPA. `runtimeCaching` khusus Google Fonts (`CacheFirst`, cache 1 tahun untuk file font) karena itu resource cross-origin yang tidak ikut precache build.
+- `index.html`: tambah `<link rel="icon">`, `<link rel="apple-touch-icon">`, `<meta name="description">`. `<link rel="manifest">` & script register SW di-inject otomatis oleh plugin saat build (tidak perlu ditulis manual).
+- **Verifikasi nyata** (bukan cuma baca kode) — dicoba di atas `npm run preview` (server produksi, karena service worker tidak aktif di `npm run dev`): manifest fetchable (200, nama & 4 icon benar) ✅, service worker ter-registrasi dan `state: activated` ✅, semua file icon reachable (200) ✅, **dan yang paling penting: `/order` di-reload dalam kondisi network benar-benar `offline` (Playwright `context.setOffline(true)`) tetap menampilkan halaman lengkap dengan benar** (bukti offline fallback beneran jalan, bukan asumsi) ✅. 0 console error di kedua kondisi.
+- **Belum bisa diverifikasi dari sesi ini**: "Add to Home Screen" di Android Chrome & iOS Safari sungguhan (butuh device fisik/emulator dengan UI native install-prompt yang tidak tersedia di headless browser) — item ini secara eksplisit memang butuh dicoba manual oleh user, idealnya setelah Fase 7 (deploy) supaya bisa dites lewat URL HTTPS asli, bukan localhost.
 
 ---
 
