@@ -295,6 +295,12 @@ Sebelum implementasi, riset referensi Flutter + skema Supabase dilakukan lewat 3
 - **Verifikasi live URL final (Playwright langsung ke `https://azin-kun.github.io/SukarameApp/`, bukan lokal)**: homepage render penuh dengan data live ✅, deep-link `/order` (uji nyata SPA-fallback di GitHub Pages sungguhan, bukan simulasi) render lengkap ✅, service worker `state: activated` ✅, **0 console error**.
 - Belum dicoba (perlu device fisik): "Add to Home Screen" Android/iOS — bisa dicoba sekarang karena URL HTTPS asli sudah live.
 
+### 2026-07-03 — Fix backend: login PIN gagal ("Cannot coerce the result to a single JSON object")
+- User mencoba login PIN sungguhan di live URL (pertama kalinya alur ini benar-benar dites end-to-end, lihat catatan "belum diverifikasi" di Fase 3) — gagal dengan error PostgREST tsb setelah PIN benar.
+- **Root cause** (bukan bug di kode SukarameApp): tabel `branches` di backend `Sukarame/supabase/` di-enable RLS tapi **tidak pernah diberi policy sama sekali** — query terakhir di `verifyPin()` (`.from('branches').select('id').limit(1).single()`) selalu balik 0 baris untuk role `authenticated`, dan `.single()` melempar error itu. Bug yang sama persis ada di `auth_provider.dart` (Flutter lama), belum pernah ketahuan karena APK belum pernah dites di device asli.
+- **Fix**: migration baru `Sukarame/supabase/core/migrations/0015_core_branches_rls.sql` (policy `branches_read`, select, authenticated, `is_staff()`) — dibuat & diterapkan ke staging lewat `python scripts/apply.py` di sesi ini (dengan izin eksplisit user), commit+push ke repo `Sukarame` terpisah. Detail lengkap ada di `Sukarame/log.md` (2026-07-03).
+- **Belum diverifikasi**: user perlu coba login PIN lagi untuk konfirmasi fix ini benar-benar menyelesaikan masalah.
+
 ---
 
 ## 7. Kontak & Referensi Lain
