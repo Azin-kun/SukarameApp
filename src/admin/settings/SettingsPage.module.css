@@ -1,0 +1,152 @@
+.title {
+  font-family: var(--font-heading);
+  color: var(--color-yellow);
+  margin: 0 0 1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-line);
+  margin-bottom: 1.25rem;
+}
+.tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: rgba(255, 248, 240, 0.5);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.tabActive {
+  color: var(--color-yellow);
+  border-color: var(--color-red);
+}
+
+.akunTab {
+  max-width: 380px;
+}
+
+.profileCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 1.1rem;
+  margin-bottom: 1rem;
+}
+.profileName {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.profilePhone {
+  color: rgba(255, 248, 240, 0.55);
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.actionRow {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.actionRow:hover {
+  border-color: var(--color-yellow);
+}
+.logoutRow {
+  color: var(--color-red-light);
+}
+
+.footerNote {
+  margin-top: 1.5rem;
+  font-size: 0.7rem;
+  color: rgba(255, 248, 240, 0.35);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 1rem;
+}
+.sheet {
+  width: 100%;
+  max-width: 320px;
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.sheetTitle {
+  margin: 0 0 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+.field label {
+  font-size: 0.7rem;
+  color: rgba(255, 248, 240, 0.55);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.field input {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--color-yellow);
+}
+
+.error {
+  color: var(--color-red-light);
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.saveBtn {
+  width: 100%;
+  background: var(--color-red);
+  color: var(--color-cream);
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.cancelBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--color-line);
+  color: rgba(255, 248, 240, 0.6);
+  padding: 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}

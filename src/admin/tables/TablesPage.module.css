@@ -1,0 +1,123 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.title {
+  font-family: var(--font-heading);
+  color: var(--color-yellow);
+  margin: 0;
+}
+.refreshBtn {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.error {
+  color: var(--color-red-light);
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  cursor: pointer;
+  color: var(--color-cream);
+  font-family: inherit;
+}
+.card:hover {
+  border-color: var(--color-yellow);
+}
+
+.cardName {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.cardCapacity {
+  font-size: 0.75rem;
+  color: rgba(255, 248, 240, 0.55);
+}
+
+.badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.badge_available {
+  background: rgba(76, 175, 80, 0.18);
+  color: #4caf50;
+}
+.badge_occupied {
+  background: rgba(211, 47, 47, 0.18);
+  color: var(--color-red-light);
+}
+.badge_reserved {
+  background: rgba(255, 193, 7, 0.18);
+  color: var(--color-yellow);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+.sheet {
+  width: 100%;
+  max-width: 320px;
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.sheetTitle {
+  margin: 0 0 0.2rem;
+}
+.sheetSubtitle {
+  margin: 0 0 1rem;
+  color: rgba(255, 248, 240, 0.55);
+  font-size: 0.8rem;
+}
+.statusOption {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  padding: 0.7rem 0.9rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.statusOption:hover {
+  border-color: var(--color-yellow);
+}
+.statusOptionActive {
+  border-color: var(--color-yellow);
+  color: var(--color-yellow);
+}

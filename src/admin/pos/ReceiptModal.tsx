@@ -1,4 +1,4 @@
-import { formatRupiah } from '../../shared/format'
+import { formatRupiah, formatDateTime } from '../../shared/format'
 import type { CartItem } from './catalogTypes'
 import styles from './ReceiptModal.module.css'
 import './receiptPrint.css'
@@ -12,16 +12,6 @@ interface ReceiptModalProps {
   cashPaid?: number
   method: string
   onDone: () => void
-}
-
-function formatDateTime(d: Date): string {
-  return new Intl.DateTimeFormat('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(d)
 }
 
 // Port dari _buildReceiptText() di Sukarame/app/lib/widgets/receipt_dialog.dart

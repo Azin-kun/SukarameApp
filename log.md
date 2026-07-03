@@ -1,7 +1,7 @@
 # Log & Rencana — SukarameApp (Unified Web PWA)
 
 > **Baca ini dulu sebelum mulai kerja.** File ini adalah rencana lengkap + log progres untuk project **SukarameApp** — pengganti terpadu dari app Flutter (`Sukarame/app/`) dan website statis (`SukarameWeb/`) yang sudah ada.
-
+   
 ---
 
 ## 1. Latar Belakang & Keputusan
@@ -164,14 +164,14 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Struk: layout HTML khusus + CSS `@media print`, trigger `window.print()`
 - [ ] **Cek fisik**: printer thermal yang dipakai kasir kompatibel dengan print-via-OS-driver (bukan cuma Bluetooth ESC/POS) — kalau tidak, perlu cari alternatif (mis. printer network/USB yang bisa di-set jadi printer sistem). **Belum bisa dicek dari sesi ini** (butuh printer fisik) — perlu dicoba manual oleh user.
 
-### Fase 5 — Modul Admin Lainnya ⏳
-- [ ] Tables/Booking (`fnb_available_tables`, `create_public_booking`, tabel `bookings`)
-- [ ] Transactions (riwayat + detail)
-- [ ] Stock (inventory)
-- [ ] Reports (laporan penjualan)
-- [ ] Staff (kelola staff & role)
-- [ ] Shift (buka/tutup shift kasir)
-- [ ] Settings termasuk **CMS**: form edit `website_sections` & `website_theme` yang langsung mempengaruhi `HomePage.tsx` (fetch dari tabel yang sama)
+### Fase 5 — Modul Admin Lainnya ✅
+- [x] Tables/Booking (`fnb_available_tables`, `create_public_booking`, tabel `bookings`)
+- [x] Transactions (riwayat + detail)
+- [x] Stock (inventory)
+- [x] Reports (laporan penjualan)
+- [x] Staff (kelola staff & role)
+- [x] Shift (buka/tutup shift kasir)
+- [x] Settings termasuk **CMS**: form edit `website_sections` & `website_theme` yang langsung mempengaruhi `HomePage.tsx` (fetch dari tabel yang sama)
 
 ### Fase 6 — PWA Polish ⏳
 - [ ] `vite-plugin-pwa`: manifest.json (nama, icon, theme_color, display: standalone)
@@ -241,6 +241,34 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - **Bug ditemukan & diperbaiki**: pesan error di `authStore.ts` (Fase 3) dan `cartStore.ts` menampilkan literal `"[object Object]"` alih-alih pesan asli, karena `PostgrestError` dari `@supabase/supabase-js` bukan instance `Error` bawaan JS sehingga `e instanceof Error` selalu `false`. Diperbaiki dengan helper baru `src/shared/errors.ts` (`getErrorMessage`) yang cek properti `.message` langsung — dipakai di kedua store. Ditemukan lewat verifikasi manual RLS-denied insert (lihat di bawah), bukan lewat code review saja.
 - **Verifikasi**: `npm run build`/`lint` bersih. Playwright (dengan `branchId`/`profile` di-inject manual via debug hook sementara — dihapus sebelum commit — karena RLS `categories`/`catalog_items` memang terbuka untuk `anon`/tidak perlu login, tapi insert ke `transactions`/`transaction_items`/`transaction_payments` mensyaratkan role `authenticated`+`is_staff()` yang tidak bisa didapat tanpa kredensial staff asli): kategori+katalog **live dari Supabase staging** ter-load benar (13 item, 4 kategori, harga cocok seed data) ✅, tambah/kurang qty di tile & drawer ✅, "Lanjut Bayar" → checkout ✅, validasi "Uang kurang" ✅, hitung kembalian ✅, insert transaksi dengan `branchId` palsu correctly ditolak Postgres (`invalid input syntax for type uuid`) dan pesannya tampil jelas ke user (bukti fix error message di atas) ✅.
 - **Belum diverifikasi end-to-end** (butuh login staff asli + transaksi sukses sungguhan): tampilan `ReceiptModal` setelah checkout sukses, isi print-preview struk fisik, dan **cek fisik printer thermal** (item checklist yang memang dari awal ditandai perlu verifikasi manual di luar sesi Claude).
+
+### 2026-07-03 — Fase 5: Modul Admin Lainnya selesai
+Sebelum implementasi, riset referensi Flutter + skema Supabase dilakukan lewat 3 subagent paralel (Tables/Booking/Shift; Transactions/Reports/Stock; Staff/Settings-CMS) supaya cepat & menyeluruh. Beberapa **gap/bug nyata di backend/reference app** ditemukan lewat riset ini (bukan di-introduce oleh port ini, tapi perlu dicatat karena mempengaruhi keputusan desain):
+- Kolom `transactions.shift_id` **tidak pernah diisi** di mana pun (Flutter maupun port ini) — jadi laporan/rekonsiliasi kas per-shift tidak benar-benar menghubungkan transaksi ke shift tertentu. Dibiarkan apa adanya (paritas dengan Flutter), dicatat sebagai keterbatasan.
+- `transactions.status` cuma pernah bernilai `open|completed|void|refunded` — **`'settled'` tidak pernah ada**. Flutter `transactions_screen.dart`/`reports_screen.dart` membandingkan ke `'settled'` (selalu false, bug diam-diam). **Diperbaiki** di port ini: bandingkan ke `'completed'`.
+- RLS untuk `fnb_tables`/`bookings`/`staff_shifts`/`inventory_items` cuma cek `is_staff()` (siapa saja staff aktif, lintas cabang) — permission granular (`core.inventory.manage`, `core.report.view.own`, dst.) ada di tabel `permissions` tapi **tidak ditegakkan di RLS** untuk modul-modul ini. Diikuti apa adanya (paritas Flutter, yang juga tidak menegakkan ini di client).
+- Staff/akun baru **tidak bisa dibuat dari browser** (butuh `service_role`, cuma bisa lewat Supabase Dashboard manual + insert `staff_profiles` — ini didokumentasikan di `seed/0_bootstrap.sql`). Modul Staff di port ini karena itu cuma **list staff + reset PIN**, sama seperti `staff_screen.dart` — tidak ada tombol buat/undang staff baru (secara sadar, bukan kelupaan).
+- CMS website (`website_sections`/`website_theme`) **sepenuhnya fitur baru** — `settings_screen.dart` Flutter tidak pernah menyentuh 2 tabel ini sama sekali (dikonfirmasi via grep, 0 match).
+
+**Modul yang dibangun** (semua di `src/admin/`):
+- `tables/TablesPage.tsx` — grid meja + ubah status (available/occupied/reserved) lewat update langsung ke `fnb_tables`, port dari `tables_screen.dart`+`table_provider.dart`.
+- `tables/BookingPage.tsx` — list reservasi aktif (join `customers`), form buat baru via RPC `create_public_booking` (durasi selalu 2 jam, hardcode — sama seperti `booking_screen.dart`), transisi status (pending→confirmed→in_progress→completed, atau batalkan) lewat update langsung ke `bookings`.
+- `transactions/TransactionsPage.tsx` — 50 transaksi terbaru + modal detail item, port dari `transactions_screen.dart` (dengan fix bug `'settled'`→`'completed'` di atas). `transactions/api.ts` dipakai bareng oleh Reports.
+- `reports/ReportsPage.tsx` — filter periode (Hari ini/7 Hari/Bulan ini), agregasi 100% client-side (total transaksi, pendapatan, item terlaris diurutkan by qty, riwayat 20 terbaru) — port persis termasuk inkonsistensi asli batas tanggalnya (today/month pakai tengah malam lokal, week pakai rolling 7×24 jam, tanpa batas atas).
+- `stock/StockPage.tsx` — list inventori (join nama dari `catalog_items`) urut stok terendah, edit stok via update absolut (bukan delta), port dari `stock_screen.dart`. Trigger DB (`fn_deduct_stock`, `fn_check_stock_low`) otomatis handle pengurangan stok saat transaksi `completed` dan notifikasi Telegram stok rendah — tidak perlu logic tambahan di client.
+- `staff/StaffPage.tsx` — list staff + reset PIN via RPC `set_pin`, port dari `staff_screen.dart` (lihat gap "staff creation" di atas).
+- `shift/ShiftPage.tsx` — buka/tutup shift (insert/update langsung ke `staff_shifts`, tidak ada RPC di backend), ringkasan kas awal/akhir/selisih saat tutup, durasi live-update. Port dari `shift_screen.dart`.
+- `settings/SettingsPage.tsx` — 2 tab: "Akun" (profil, ganti PIN via `authStore.changePin`, keluar — port dari `settings_screen.dart`) dan "Website" (`WebsiteCmsPage.tsx`, fitur baru).
+- `settings/WebsiteCmsPage.tsx` — form edit 5 `website_sections` (title/body/content-JSON per section: hero/about/hours/contact/social) + `website_theme` (9 warna + font), gated permission `core.website.manage` (lewat RLS, bukan pre-check di client — kalau gagal, pesan error Postgres tampil apa adanya lewat `getErrorMessage`).
+- `customer/useWebsiteContent.ts` — **HomePage sekarang benar-benar membaca `website_sections`/`website_theme`** (anon-readable, tanpa perlu login): hero tagline+body, cerita/about body, jam buka, alamat, kontak WA, link sosial, dan 9 warna tema — semua dengan fallback ke teks statis asli kalau data CMS kosong/gagal fetch (progressive enhancement, bukan hard dependency). Ini memenuhi requirement checklist "langsung mempengaruhi HomePage.tsx" yang eksplisit di rencana Fase 5.
+
+**Keputusan desain baru**: RPC `create_public_booking` dipanggil dengan payload **flat** (`{branch_id, customer_name, ...}`, bukan `{p_payload: {...}}`) — sama seperti pola RPC jsonb tunggal yang sudah dipakai di Fase 2 (`create_web_order`), karena PostgREST otomatis memetakan seluruh body jadi parameter jsonb tunggal fungsi tsb.
+
+**Verifikasi**: `npm run build`/`lint` bersih (95 file, tidak ada error TS). Playwright:
+- **HomePage/CMS — diverifikasi PENUH tanpa perlu auth** (RLS anon-readable): konfirmasi lewat inspeksi response network mentah bahwa `hero.body`, `about.body`, `hours.body`, dll benar-benar berasal dari Supabase staging (bukan fallback statis) — hero-sub menampilkan teks CMS yang lebih pendek dari default, membuktikan wiring nyata bekerja, bukan cuma "kebetulan sama". `WebsiteCmsPage` juga dites dengan `branch_id` staging asli (didapat lewat `curl` publik) — form ter-isi benar dengan 5 section + tema warna asli.
+- **7 modul lain** (Tables/Booking/Transactions/Reports/Stock/Staff/Shift): karena RLS-nya mensyaratkan `authenticated`+`is_staff()` (tidak bisa didapat tanpa kredensial staff asli di sesi ini — sama seperti Fase 3/4), verifikasi dilakukan dengan `branchId`/`profile` di-inject manual via debug hook sementara (dihapus sebelum commit, tidak ikut git): semua halaman render tanpa crash, pesan error Postgres tampil jelas (bukti `getErrorMessage` dari Fase 4 bekerja konsisten di semua store baru), form/dialog (buka shift, ganti PIN, reservasi baru, edit stok) berfungsi, filter periode Laporan berpindah dengan benar, sidebar nav aktif menyorot halaman yang benar.
+- **Belum diverifikasi end-to-end** (butuh kredensial staff asli): insert/update sungguhan ke `fnb_tables`/`bookings`/`transactions`/`inventory_items`/`staff_shifts`/`staff_pins`, dan penyimpanan sungguhan lewat `WebsiteCmsPage` (butuh permission `core.website.manage`) — perlu dicoba manual oleh user.
+- Catatan non-blocking: build menghasilkan 1 chunk JS >500KB (bundle admin makin besar seiring modul bertambah) — belum masalah fungsional, tapi code-splitting (`React.lazy` per route admin) bisa jadi optimasi di Fase 6/7 kalau ukuran bundle mulai terasa di jaringan lambat.
 
 ---
 

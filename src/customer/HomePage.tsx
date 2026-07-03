@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './HomePage.css'
 import { menuCategories, type MenuCategoryKey } from './menuData'
 import { formatRupiah } from '../shared/format'
+import { useWebsiteContent, themeToCssVars } from './useWebsiteContent'
 
 const WA_NUMBER = '6282220888139'
 const SECTION_COUNT = 6
@@ -135,8 +136,20 @@ export default function HomePage() {
   const mieItems = menuCategories.mie.items
   const gorengItems = menuCategories.goreng.items
 
+  // CMS (src/admin/settings/WebsiteCmsPage.tsx) — fallback ke teks statis
+  // asli kalau tabel kosong/fetch gagal, lihat useWebsiteContent.ts.
+  const { sections: cms, theme: cmsTheme } = useWebsiteContent()
+  const heroTag = cms.hero?.content?.tagline as string | undefined
+  const heroSub = cms.hero?.body
+  const aboutBody = cms.about?.body
+  const hoursBody = cms.hours?.body
+  const contactAddress = cms.contact?.body
+  const contactWa = cms.contact?.content?.whatsapp as string | undefined
+  const socialInstagramUrl = (cms.social?.content?.instagram as string | undefined) ?? 'https://www.instagram.com/mie_sukarame/'
+  const socialWhatsappUrl = (cms.social?.content?.whatsapp as string | undefined) ?? `https://wa.me/${WA_NUMBER}`
+
   return (
-    <div className="home-page">
+    <div className="home-page" style={themeToCssVars(cmsTheme)}>
       {/* LIGHTBOX */}
       <div className={`lb${lightbox ? ' open' : ''}`} onClick={(e) => e.target === e.currentTarget && setLightbox(null)}>
         <span className="lb-close" onClick={() => setLightbox(null)}>
@@ -190,14 +203,14 @@ export default function HomePage() {
             <img className="hero-video-main" src="/img/hero.webp" alt="Semangkuk Mie Ayam Sukarame" />
           </div>
           <div className="hero-body">
-            <div className="hero-tag">Warung Mie Legendaris · Sukarame</div>
+            <div className="hero-tag">{heroTag ?? 'Warung Mie Legendaris · Sukarame'}</div>
             <h1 className="hero-title">
               Mie Ayam
               <br />
               <em>Sukarame</em>
             </h1>
             <p className="hero-sub">
-              Cita rasa asli yang menggugah selera. Mie segar, kuah gurih, dan topping spesial yang bikin ketagihan.
+              {heroSub ?? 'Cita rasa asli yang menggugah selera. Mie segar, kuah gurih, dan topping spesial yang bikin ketagihan.'}
             </p>
             <div className="hero-cta">
               <Link className="btn-solid" to="/order">
@@ -238,14 +251,20 @@ export default function HomePage() {
               <em>Kenangan</em>
             </h2>
             <div className="story-body">
-              <p>
-                Mie Ayam Sukarame lahir dari semangat menyajikan mie ayam yang autentik — dibuat dari bahan segar
-                setiap hari, dengan kuah kaldu yang dimasak perlahan untuk mendapatkan cita rasa terbaik.
-              </p>
-              <p>
-                Dari satu gerobak kecil hingga warung yang kini menjadi tempat berkumpul keluarga dan sahabat, kami
-                berkomitmen menjaga kualitas di setiap mangkuk yang kami sajikan.
-              </p>
+              {aboutBody ? (
+                <p>{aboutBody}</p>
+              ) : (
+                <>
+                  <p>
+                    Mie Ayam Sukarame lahir dari semangat menyajikan mie ayam yang autentik — dibuat dari bahan segar
+                    setiap hari, dengan kuah kaldu yang dimasak perlahan untuk mendapatkan cita rasa terbaik.
+                  </p>
+                  <p>
+                    Dari satu gerobak kecil hingga warung yang kini menjadi tempat berkumpul keluarga dan sahabat, kami
+                    berkomitmen menjaga kualitas di setiap mangkuk yang kami sajikan.
+                  </p>
+                </>
+              )}
             </div>
             <div className="story-nums">
               <div>
@@ -469,21 +488,25 @@ export default function HomePage() {
               <div className="info-card">
                 <div className="info-title">Jam Buka</div>
                 <div className="info-copy">
-                  Senin – Minggu
-                  <br />
-                  <strong style={{ color: 'var(--crm)' }}>07.00 – 18.00 WIB</strong>
-                  <br />
-                  <span style={{ color: 'rgba(255,248,240,.4)', fontSize: '.7rem' }}>(atau sampai habis)</span>
+                  {hoursBody ?? (
+                    <>
+                      Senin – Minggu
+                      <br />
+                      <strong style={{ color: 'var(--crm)' }}>07.00 – 18.00 WIB</strong>
+                      <br />
+                      <span style={{ color: 'rgba(255,248,240,.4)', fontSize: '.7rem' }}>(atau sampai habis)</span>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="info-card">
                 <div className="info-title">Ikuti Kami</div>
                 <div className="info-copy">Update menu &amp; promo terbaru</div>
                 <div className="social-row">
-                  <a className="social-btn" href="https://www.instagram.com/mie_sukarame/" target="_blank" rel="noopener">
+                  <a className="social-btn" href={socialInstagramUrl} target="_blank" rel="noopener">
                     📸 Instagram
                   </a>
-                  <a className="social-btn" href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener">
+                  <a className="social-btn" href={socialWhatsappUrl} target="_blank" rel="noopener">
                     💬 WhatsApp
                   </a>
                 </div>
@@ -520,21 +543,25 @@ export default function HomePage() {
             <div className="loc-row">
               <div className="loc-lbl">Alamat</div>
               <div className="loc-val">
-                Jl. Rindang, Tamantirto, Kec. Kasihan,
-                <br />
-                Kab. Bantul, D.I. Yogyakarta 55184
+                {contactAddress ?? (
+                  <>
+                    Jl. Rindang, Tamantirto, Kec. Kasihan,
+                    <br />
+                    Kab. Bantul, D.I. Yogyakarta 55184
+                  </>
+                )}
               </div>
             </div>
             <div className="loc-row">
               <div className="loc-lbl">Jam Buka</div>
-              <div className="loc-val">Senin – Minggu, 07.00 – 18.00 WIB</div>
+              <div className="loc-val">{hoursBody ?? 'Senin – Minggu, 07.00 – 18.00 WIB'}</div>
               <div className="loc-badges">
                 <span className="loc-badge">Buka Setiap Hari</span>
               </div>
             </div>
             <div className="loc-row">
               <div className="loc-lbl">Kontak</div>
-              <div className="loc-val">WA: +62 822-2088-8139</div>
+              <div className="loc-val">WA: {contactWa ? `+${contactWa}` : '+62 822-2088-8139'}</div>
             </div>
             <div className="mini-map">
               <iframe
@@ -553,7 +580,7 @@ export default function HomePage() {
             <a className="btn-directions" href="https://maps.app.goo.gl/N6Ni8pnRMqnCt8YKA" target="_blank" rel="noopener">
               🗺 Petunjuk Arah
             </a>
-            <a className="loc-wa" href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener">
+            <a className="loc-wa" href={socialWhatsappUrl} target="_blank" rel="noopener">
               💬 Chat via WhatsApp
             </a>
           </div>

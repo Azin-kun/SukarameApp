@@ -1,0 +1,140 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.title {
+  font-family: var(--font-heading);
+  color: var(--color-yellow);
+  margin: 0;
+}
+.refreshBtn {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.error {
+  color: var(--color-red-light);
+  margin-bottom: 1rem;
+}
+.empty {
+  color: rgba(255, 248, 240, 0.5);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 0.8rem 1.1rem;
+  cursor: pointer;
+  color: var(--color-cream);
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+.row:hover {
+  border-color: var(--color-yellow);
+}
+
+.rowLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-yellow);
+  flex-shrink: 0;
+}
+.dotPaid {
+  background: #4caf50;
+}
+
+.rowDate {
+  font-size: 0.85rem;
+}
+.rowStatus {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 248, 240, 0.5);
+  margin-top: 0.1rem;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 1rem;
+}
+.sheet {
+  width: 100%;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.sheetTitle {
+  margin: 0 0 0.2rem;
+}
+.sheetSubtitle {
+  margin: 0 0 1rem;
+  color: rgba(255, 248, 240, 0.55);
+  font-size: 0.75rem;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--color-line);
+}
+.totalRow strong {
+  color: var(--color-yellow);
+}
+
+.closeBtn {
+  width: 100%;
+  margin-top: 1.25rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  color: var(--color-cream);
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
