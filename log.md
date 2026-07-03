@@ -179,10 +179,10 @@ Update status (⏳/✅) tiap fase selesai, tambah catatan seperti format `Sukara
 - [x] Service worker: caching strategy (offline fallback minimal untuk halaman customer)
 - [ ] Test "Add to Home Screen" di Android Chrome & iOS Safari — **belum bisa dicek dari sesi ini** (butuh device fisik/emulator dengan UI install prompt), perlu dicoba manual oleh user setelah deploy (Fase 7).
 
-### Fase 7 — CI/CD & Deploy ⏳
-- [ ] `.github/workflows/deploy.yml`: `npm ci` → `npm run build` → deploy `dist/` ke GitHub Pages (pakai `actions/deploy-pages`)
-- [ ] Aktifkan GitHub Pages di repo (source: GitHub Actions)
-- [ ] Verifikasi live URL jalan di HTTPS (wajib untuk service worker)
+### Fase 7 — CI/CD & Deploy ⏳ (workflow siap, belum di-push/deploy — perlu izin user)
+- [x] `.github/workflows/deploy.yml`: `npm ci` → `npm run build` → deploy `dist/` ke GitHub Pages (pakai `actions/deploy-pages`)
+- [ ] Aktifkan GitHub Pages di repo (source: GitHub Actions) — **butuh konfirmasi user**, belum dilakukan
+- [ ] Verifikasi live URL jalan di HTTPS (wajib untuk service worker) — menyusul setelah push+deploy pertama
 
 ### Fase 8 — Cutover ⏳
 - [ ] Feature parity check vs `Sukarame/app/` (Flutter) dan `SukarameWeb/`
@@ -277,6 +277,19 @@ Sebelum implementasi, riset referensi Flutter + skema Supabase dilakukan lewat 3
 - `index.html`: tambah `<link rel="icon">`, `<link rel="apple-touch-icon">`, `<meta name="description">`. `<link rel="manifest">` & script register SW di-inject otomatis oleh plugin saat build (tidak perlu ditulis manual).
 - **Verifikasi nyata** (bukan cuma baca kode) — dicoba di atas `npm run preview` (server produksi, karena service worker tidak aktif di `npm run dev`): manifest fetchable (200, nama & 4 icon benar) ✅, service worker ter-registrasi dan `state: activated` ✅, semua file icon reachable (200) ✅, **dan yang paling penting: `/order` di-reload dalam kondisi network benar-benar `offline` (Playwright `context.setOffline(true)`) tetap menampilkan halaman lengkap dengan benar** (bukti offline fallback beneran jalan, bukan asumsi) ✅. 0 console error di kedua kondisi.
 - **Belum bisa diverifikasi dari sesi ini**: "Add to Home Screen" di Android Chrome & iOS Safari sungguhan (butuh device fisik/emulator dengan UI native install-prompt yang tidak tersedia di headless browser) — item ini secara eksplisit memang butuh dicoba manual oleh user, idealnya setelah Fase 7 (deploy) supaya bisa dites lewat URL HTTPS asli, bukan localhost.
+
+### 2026-07-03 — Fase 7: CI/CD & Deploy (workflow siap, deploy pertama menunggu izin user)
+- **Base path GitHub Pages**: repo ini adalah *project page* (`Azin-kun/SukarameApp`, bukan repo `azin-kun.github.io`), jadi live URL akan berupa subpath `https://azin-kun.github.io/SukarameApp/`, bukan root domain. Ditambahkan `base: '/SukarameApp/'` di `vite.config.ts` (dipakai juga untuk `manifest.start_url`/`scope`/`navigateFallback` supaya konsisten, tidak cuma default `/`).
+- **Bug ditemukan & diperbaiki (baru kelihatan setelah base path diaktifkan)**: banyak referensi gambar customer (`/img/hero.webp`, logo, dst. di `HomePage.tsx`/`menuData.ts`) ditulis sebagai string literal absolut — Vite HANYA otomatis meng-inject `base` ke asset yang di-`import`/dirujuk lewat `<link>`/`<script>` di `index.html`, BUKAN ke string runtime seperti `src="/img/x.webp"` di JSX. Kalau dibiarkan, semua foto menu/hero/logo akan 404 begitu di-deploy ke subpath. Diperbaiki dengan helper baru `src/shared/assetUrl.ts` (`assetUrl(path)` → prefix `import.meta.env.BASE_URL`), dipakai di semua tempat yang merujuk `public/img/*`.
+- **`src/App.tsx`**: `<BrowserRouter basename={import.meta.env.BASE_URL}>` — otomatis mengikuti `base` Vite (dev `/`, prod `/SukarameApp/`), tidak di-hardcode supaya tidak perlu update 2 tempat kalau nama repo berubah.
+- **SPA fallback untuk GitHub Pages** (`public/404.html`): GitHub Pages adalah static host tanpa rewrite server-side, jadi hard-refresh/direct-link ke route non-root (mis. `/SukarameApp/admin/pos`) akan 404 di level CDN. Dipakai pola standar [spa-github-pages](https://github.com/rafgraph/spa-github-pages): `404.html` redirect ke `index.html` lewat query string `?redirect=...`, lalu script inline di `<head>` `index.html` memulihkannya via `history.replaceState` sebelum React Router mount.
+  - **Bug ditemukan & diperbaiki lewat testing nyata** (bukan keliatan dari baca kode): hasil `history.replaceState` awalnya menghasilkan double-slash (`/SukarameApp//admin/pos`) karena `location.pathname` (berakhiran `/`) + `redirect` (berawalan `/`) digabung langsung. Diperbaiki dengan `.replace(/\/$/, '')` sebelum concat.
+- `.github/workflows/deploy.yml`: trigger `push` ke `main` + `workflow_dispatch` manual, job `build` (`npm ci` → `npm run build` → `actions/configure-pages` → `actions/upload-pages-artifact`) lalu job `deploy` (`actions/deploy-pages`) — pola resmi GitHub untuk static site, YAML divalidasi via `js-yaml`.
+- **Verifikasi nyata**: build+lint bersih. Setelah base path diaktifkan, `dist/index.html`/`manifest.webmanifest`/`sw.js` dicek langsung — semua path (`favicon`, `apple-touch-icon`, JS/CSS bundle, `manifest` link, `start_url`/`scope`, `navigateFallback`) sudah ter-prefix `/SukarameApp/` dengan benar. Redirect 404→index diuji end-to-end pakai Playwright di atas `npm run preview` (dengan base path aktif): `/SukarameApp/?redirect=%2Forder` → URL akhir `/SukarameApp/order` dengan konten OrderPage lengkap ✅; `/SukarameApp/?redirect=%2Fadmin%2Fpos` → benar di-guard ke `/SukarameApp/admin/login` (karena belum login) ✅.
+- **BELUM DILAKUKAN, butuh keputusan/izin user** (aksi ini visible ke publik & mengubah state remote, jadi sengaja tidak dilakukan otomatis):
+  1. **Push 7 commit lokal ke `origin/main`** — repo `Azin-kun/SukarameApp` di GitHub saat ini masih cuma berisi commit awal (`Inisiasi...`); seluruh Fase 1–7 baru ada di lokal. Push ke `main` juga otomatis men-trigger workflow deploy (karena trigger-nya `on: push: branches: [main]`).
+  2. **Aktifkan GitHub Pages** di Settings repo dengan source **"GitHub Actions"** (dicek lewat `gh api repos/Azin-kun/SukarameApp/pages` → belum ada/404) — wajib sebelum job `deploy` bisa sukses, workflow akan gagal di step `actions/deploy-pages` kalau Pages belum diaktifkan dengan source yang benar.
+  3. Setelah 1 & 2: verifikasi live URL `https://azin-kun.github.io/SukarameApp/` jalan di HTTPS, cek PWA installability & "Add to Home Screen" sungguhan (menyusul item pending dari Fase 6).
 
 ---
 

@@ -1,5 +1,7 @@
 // Data menu statis — port dari SukarameWeb (index.html + order.html).
 // Sumber referensi harga/nama: Sukarame/supabase/seed/1_catalog.sql.
+import { assetUrl } from '../shared/assetUrl'
+
 export interface MenuItem {
   id: string
   name: string
@@ -14,21 +16,21 @@ export const menuMie: MenuItem[] = [
     name: 'Mie Ayam Original',
     desc: 'Mie kuning segar, ayam cincang berbumbu, kuah kaldu gurih. Klasik yang selalu pas.',
     price: 10000,
-    img: '/img/mie-ayam-original.webp',
+    img: assetUrl('/img/mie-ayam-original.webp'),
   },
   {
     id: 'ma-cek',
     name: 'Mie Ayam Ceker',
     desc: 'Mie ayam dengan ceker ayam empuk yang dimasak hingga bumbu meresap sempurna.',
     price: 12000,
-    img: '/img/mie-ayam-ceker.webp',
+    img: assetUrl('/img/mie-ayam-ceker.webp'),
   },
   {
     id: 'ma-bks',
     name: 'Mie Ayam Bakso',
     desc: 'Perpaduan mie ayam dan bakso sapi dalam satu mangkuk — lebih kenyang, lebih puas.',
     price: 13000,
-    img: '/img/mie-ayam-bakso.webp',
+    img: assetUrl('/img/mie-ayam-bakso.webp'),
   },
 ]
 
@@ -38,14 +40,14 @@ export const menuGoreng: MenuItem[] = [
     name: 'Mie Goreng Level 0–2',
     desc: 'Mie goreng kering berbumbu dengan ayam cincang gurih. Pedas ringan hingga sedang — untuk semua selera.',
     price: 13000,
-    img: '/img/mie-goreng.webp',
+    img: assetUrl('/img/mie-goreng.webp'),
   },
   {
     id: 'mg-l35',
     name: 'Mie Goreng Level 3–5',
     desc: 'Mie goreng pedas level tinggi — bumbu kaya, rasa nendang, untuk jiwa yang berani. Siap?',
     price: 15000,
-    img: '/img/mie-goreng-pedas.webp',
+    img: assetUrl('/img/mie-goreng-pedas.webp'),
   },
 ]
 

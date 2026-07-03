@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mie Ayam Sukarame</title>
+    <script>
+      // GitHub Pages adalah static host tanpa rewrite server-side untuk SPA —
+      // route selain "/" (mis. /SukarameApp/admin/pos) di-refresh langsung
+      // akan nyasar ke sini. Redirect path asli lewat query string ke
+      // index.html; index.html mengembalikannya via history.replaceState
+      // sebelum React Router mount. Pola standar:
+      // https://github.com/rafgraph/spa-github-pages
+      // PENTING: nilai `base` di sini harus SAMA dengan `base` di vite.config.ts.
+      var base = '/SukarameApp'
+      var path = location.pathname.slice(base.length) + location.search + location.hash
+      location.replace(base + '/?redirect=' + encodeURIComponent(path))
+    </script>
+  </head>
+  <body></body>
+</html>

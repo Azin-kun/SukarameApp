@@ -2,6 +2,19 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Pasangan dari public/404.html — pulihkan path asli (yang di-redirect
+      // lewat query string) ke address bar sebelum React Router mount.
+      ;(function () {
+        var redirect = new URLSearchParams(location.search).get('redirect')
+        if (redirect) {
+          // location.pathname di sini selalu berakhiran "/" (root base path),
+          // dan redirect selalu berawalan "/" (lihat public/404.html) — buang
+          // salah satu supaya tidak jadi "//".
+          history.replaceState(null, '', location.pathname.replace(/\/$/, '') + redirect)
+        }
+      })()
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1A0A00" />
     <meta name="description" content="Mie Ayam Sukarame — pesan online & kasir/admin" />

@@ -2,8 +2,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// Repo GitHub Pages (project page, bukan azin-kun.github.io) di-serve dari
+// subpath /SukarameApp/, bukan root domain — lihat log.md Fase 7.
+const base = '/SukarameApp/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -14,8 +19,8 @@ export default defineConfig({
         short_name: 'Sukarame',
         description: 'Mie Ayam Sukarame — pesan online & kasir/admin',
         lang: 'id',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         background_color: '#1A0A00',
         theme_color: '#1A0A00',
@@ -31,7 +36,7 @@ export default defineConfig({
         // dipakai offline minimal (lihat log.md Fase 6). Admin tetap butuh
         // koneksi ke Supabase untuk berfungsi walau shell-nya ikut ter-cache.
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

@@ -4,6 +4,7 @@ import './HomePage.css'
 import { menuCategories, type MenuCategoryKey } from './menuData'
 import { formatRupiah } from '../shared/format'
 import { useWebsiteContent, themeToCssVars } from './useWebsiteContent'
+import { assetUrl } from '../shared/assetUrl'
 
 const WA_NUMBER = '6282220888139'
 const SECTION_COUNT = 6
@@ -19,7 +20,7 @@ interface CarouselSlide {
 
 const CAROUSEL_SLIDES: CarouselSlide[] = [
   {
-    img: '/img/mie-ayam-original.webp',
+    img: assetUrl('/img/mie-ayam-original.webp'),
     alt: 'Mie Ayam Original',
     tag: 'Menu Utama · Rp 10.000',
     name: 'Mie Ayam Original',
@@ -27,7 +28,7 @@ const CAROUSEL_SLIDES: CarouselSlide[] = [
     cta: { label: '🍜 Pesan Online', href: '/order' },
   },
   {
-    img: '/img/mie-goreng-pedas.webp',
+    img: assetUrl('/img/mie-goreng-pedas.webp'),
     alt: 'Mie Ayam Goreng Level 3-5',
     tag: 'Menu Andalan · Rp 15.000',
     name: (
@@ -41,7 +42,7 @@ const CAROUSEL_SLIDES: CarouselSlide[] = [
     cta: { label: '🔥 Pesan via WA', href: `https://wa.me/${WA_NUMBER}`, external: true },
   },
   {
-    img: '/img/mie-ayam-bakso.webp',
+    img: assetUrl('/img/mie-ayam-bakso.webp'),
     alt: 'Mie Ayam Bakso',
     tag: 'Menu Favorit · Rp 13.000',
     name: 'Mie Ayam Bakso',
@@ -161,7 +162,7 @@ export default function HomePage() {
       {/* NAV */}
       <nav className={`nav${navSolid ? ' solid' : ''}${navHidden ? ' hidden' : ''}`}>
         <a className="nav-brand" href="#" onClick={(e) => { e.preventDefault(); scrollToSec(0) }}>
-          <img src="/img/logo.jpg" alt="Logo Mie Ayam Sukarame" />
+          <img src={assetUrl('/img/logo.jpg')} alt="Logo Mie Ayam Sukarame" />
           <span className="nav-brand-name">Mie Ayam</span>
           <span className="nav-brand-sub">Sukarame · Asli &amp; Segar</span>
         </a>
@@ -199,8 +200,8 @@ export default function HomePage() {
           ref={(el) => { sectionRefs.current[0] = el }}
         >
           <div className="hero-img">
-            <img className="hero-video-blur" src="/img/hero.webp" alt="" aria-hidden="true" />
-            <img className="hero-video-main" src="/img/hero.webp" alt="Semangkuk Mie Ayam Sukarame" />
+            <img className="hero-video-blur" src={assetUrl('/img/hero.webp')} alt="" aria-hidden="true" />
+            <img className="hero-video-main" src={assetUrl('/img/hero.webp')} alt="Semangkuk Mie Ayam Sukarame" />
           </div>
           <div className="hero-body">
             <div className="hero-tag">{heroTag ?? 'Warung Mie Legendaris · Sukarame'}</div>
@@ -238,9 +239,9 @@ export default function HomePage() {
           <div className="story-right">
             <img
               className="story-img"
-              src="/img/story-foto.webp"
+              src={assetUrl('/img/story-foto.webp')}
               alt="Dapur Mie Ayam Sukarame"
-              onClick={() => setLightbox({ src: '/img/story-foto.webp', alt: 'Dapur Mie Ayam Sukarame' })}
+              onClick={() => setLightbox({ src: assetUrl('/img/story-foto.webp'), alt: 'Dapur Mie Ayam Sukarame' })}
             />
           </div>
           <div className="story-left">
@@ -290,9 +291,9 @@ export default function HomePage() {
         >
           <div className="sig-photo right">
             <img
-              src="/img/mie-goreng-pedas.webp"
+              src={assetUrl('/img/mie-goreng-pedas.webp')}
               alt="Mie Ayam Goreng Level 3-5"
-              onClick={() => setLightbox({ src: '/img/mie-goreng-pedas.webp', alt: 'Mie Ayam Goreng Level 3-5' })}
+              onClick={() => setLightbox({ src: assetUrl('/img/mie-goreng-pedas.webp'), alt: 'Mie Ayam Goreng Level 3-5' })}
             />
           </div>
           <div className="sig-text from-left">
