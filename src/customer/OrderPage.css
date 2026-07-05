@@ -31,7 +31,9 @@
   padding-bottom: 140px;
 }
 
-/* NAV */
+/* NAV — background selalu gelap (hardcode), sama seperti .nav di HomePage,
+   jadi teks di dalamnya (rgba(255,248,240,X) di bawah) SENGAJA tidak ikut
+   token --color-text-muted (yang sekarang abu-abu untuk bg putih). */
 .order-nav {
   position: sticky;
   top: 0;
@@ -48,7 +50,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--color-text-muted);
+  color: rgba(255, 248, 240, 0.55);
   text-decoration: none;
   font-size: 0.65rem;
   letter-spacing: 0.15em;
@@ -115,7 +117,9 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   padding: 0.75rem 1.1rem;
-  color: var(--color-text-muted);
+  /* Background .cat-tabs selalu gelap (hardcode di atas), jadi bukan
+     var(--color-text-muted) yang sekarang abu-abu untuk bg putih. */
+  color: rgba(255, 248, 240, 0.4);
   cursor: pointer;
   border: none;
   border-bottom: 2px solid transparent;
