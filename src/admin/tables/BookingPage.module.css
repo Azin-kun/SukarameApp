@@ -95,7 +95,7 @@
 }
 .status_in_progress {
   background: rgba(76, 175, 80, 0.18);
-  color: #2e7d32;
+  color: #1b5e20;
 }
 .status_completed {
   background: rgba(158, 158, 158, 0.18);

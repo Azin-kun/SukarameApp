@@ -23,7 +23,7 @@
 
 .activeCard {
   background: var(--color-surface);
-  border: 1px solid #4caf50;
+  border: 1px solid #2e7d32;
   border-radius: 8px;
   padding: 1.25rem;
   max-width: 360px;
@@ -33,7 +33,7 @@
   position: relative;
   overflow: hidden;
   background: rgba(76, 175, 80, 0.18);
-  color: #2e7d32;
+  color: #1b5e20;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -69,7 +69,7 @@
 }
 
 .diffPositive {
-  color: #4caf50;
+  color: #2e7d32;
 }
 .diffNegative {
   color: var(--color-red);

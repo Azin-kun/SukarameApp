@@ -18,9 +18,10 @@
   --color-yellow-tint: rgba(255, 193, 7, 0.12);
   /* Varian gelap khusus TEKS (bukan background/border) — --color-yellow
      asli kontrasnya jelek (~1.6:1) kalau dipakai sebagai warna teks di
-     atas putih (dulu aman karena bg gelap). Dipakai lewat alias
-     --ylw-txt di HomePage.css/OrderPage.css dan langsung di admin. */
-  --color-yellow-text: #8a6d00;
+     atas putih (dulu aman karena bg gelap). ~5.7-6.2:1 di putih/abu
+     terang (--color-surface-2), margin lebih dari cukup. Dipakai lewat
+     alias --ylw-txt di HomePage.css/OrderPage.css dan langsung di admin. */
+  --color-yellow-text: #7a6100;
 
   --color-text: #1a1a1a;
   --color-text-muted: #6b6b6b;
@@ -28,9 +29,11 @@
   --color-border: #e5e5e5;
   --color-border-strong: rgba(211, 47, 47, 0.3);
 
-  /* Khusus teks di atas foto full-bleed (Hero/Signature/Carousel di
-     HomePage) — SELALU krem terang, tidak ikut tema, karena overlay
-     gradient di baliknya selalu gelap (hardcode, lihat HomePage.css). */
+  /* Khusus teks di atas foto full-bleed (Hero/Carousel di HomePage) —
+     SELALU krem terang, tidak ikut tema, karena overlay gradient di
+     baliknya selalu gelap (hardcode, lihat HomePage.css). CATATAN:
+     .sec-sig ("Signature") BUKAN termasuk — teksnya duduk di kolom
+     terpisah dengan bg terang, bukan di atas foto langsung. */
   --photo-text: #fff8f0;
 
   --font-heading: 'Playfair Display', Georgia, serif;

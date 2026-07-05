@@ -27,9 +27,14 @@
 /* Elemen yang SELALU di atas backdrop gelap (foto atau nav gelap
    translucent), terlepas dari section apa yang aktif — --crm dipaksa
    tetap krem terang di sini, TIDAK ikut tema umum. .lb = lightbox foto
-   (background-nya sendiri hardcode gelap, sama seperti .nav). */
+   (background-nya sendiri hardcode gelap, sama seperti .nav).
+   CATATAN: .sec-sig SENGAJA TIDAK di sini — meski namanya "photo
+   section", teksnya (.sig-text) sebenarnya duduk di kolom terpisah
+   dengan background .sig-dark (var(--brn2), terang di tema baru),
+   BUKAN di atas foto langsung seperti Hero/Carousel — ditemukan &
+   diperbaiki 2026-07-05 (sempat salah masuk daftar ini sejak Fase
+   awal, bikin teks nyaris tak kelihatan di atas bg terang). */
 .sec-hero,
-.sec-sig,
 .sec-carousel,
 .nav,
 .halal-footer,
@@ -614,7 +619,7 @@ html {
 }
 .sig-desc {
   font-size: 0.85rem;
-  color: rgba(255, 248, 240, 0.62);
+  color: var(--color-text-muted);
   line-height: 1.8;
   margin-bottom: 2rem;
   max-width: 360px;
