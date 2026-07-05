@@ -30,6 +30,8 @@
 }
 .activeBadge {
   display: inline-block;
+  position: relative;
+  overflow: hidden;
   background: rgba(76, 175, 80, 0.18);
   color: #4caf50;
   font-size: 0.7rem;
@@ -39,6 +41,25 @@
   border-radius: 999px;
   margin-bottom: 0.9rem;
   font-weight: 700;
+}
+.activeBadge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: badge-shine 2.6s ease-in-out infinite;
+}
+@keyframes badge-shine {
+  0% {
+    left: -60%;
+  }
+  50%,
+  100% {
+    left: 140%;
+  }
 }
 .activeRow {
   display: flex;
@@ -63,6 +84,15 @@
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
+}
+.openBtn:hover:not(:disabled) {
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 .openBtn:disabled {
   opacity: 0.5;
@@ -78,6 +108,15 @@
   font-weight: 600;
   cursor: pointer;
   margin-top: 1rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
+}
+.closeBtn:hover:not(:disabled) {
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 .closeBtn:disabled {
   opacity: 0.5;
