@@ -1,23 +1,32 @@
-/* Tema Sukarame — port dari Sukarame/app/lib/config/theme.dart & SukarameWeb/index.html.
-   Nilai warna & font HARUS sinkron dengan shared/theme.ts (satu-satunya sumber lain yang boleh menduplikasi ini). */
+/* Tema Sukarame — tema terang, referensi warna dari assets/banner.jfif
+   (merah/kuning-emas tetap sama, background sekarang putih).
+   Nilai warna & font adalah satu-satunya sumber kebenaran — jangan
+   duplikasi di file lain. Lihat docs/superpowers/specs/2026-07-03-light-theme-rebrand-design.md
+   untuk alasan tiap token. */
 :root {
-  --color-bg: #1a0a00;
-  --color-surface: #3d1400;
-  --color-surface-2: #5c2000;
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f5f5;
 
   --color-red: #d32f2f;
   --color-red-light: #ff5252;
-  --color-red-tint: rgba(211, 47, 47, 0.18);
+  --color-red-dark: #b71c1c;
+  --color-red-tint: rgba(211, 47, 47, 0.08);
 
   --color-yellow: #ffc107;
   --color-yellow-light: #ffd54f;
-  --color-yellow-tint: rgba(255, 193, 7, 0.15);
+  --color-yellow-tint: rgba(255, 193, 7, 0.12);
 
-  --color-cream: #fff8f0;
-  --color-cream-2: #ffe8d0;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b6b;
 
-  --color-line: rgba(211, 47, 47, 0.28);
-  --color-line-2: rgba(255, 193, 7, 0.5);
+  --color-border: #e5e5e5;
+  --color-border-strong: rgba(211, 47, 47, 0.3);
+
+  /* Khusus teks di atas foto full-bleed (Hero/Signature/Carousel di
+     HomePage) — SELALU krem terang, tidak ikut tema, karena overlay
+     gradient di baliknya selalu gelap (hardcode, lihat HomePage.css). */
+  --photo-text: #fff8f0;
 
   --font-heading: 'Playfair Display', Georgia, serif;
   --font-body: 'Poppins', system-ui, sans-serif;

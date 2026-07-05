@@ -18,7 +18,7 @@
 }
 .hint {
   font-size: 0.8rem;
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   margin: 0 0 1rem;
 }
 
@@ -31,7 +31,7 @@
 .sectionCard,
 .themeCard {
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.1rem;
   max-width: 520px;
@@ -59,15 +59,15 @@
 }
 .field label {
   font-size: 0.7rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .field input,
 .field textarea {
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
   font-size: 0.85rem;
@@ -92,7 +92,7 @@
 
 .saveBtn {
   background: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
@@ -102,7 +102,7 @@
 }
 .saveBtn:hover {
   background: var(--color-yellow);
-  color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .themeGrid {
@@ -122,7 +122,7 @@
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 .colorRow input {

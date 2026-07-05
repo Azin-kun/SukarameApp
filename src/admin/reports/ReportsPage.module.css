@@ -11,8 +11,8 @@
 }
 .periodChip {
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  color: rgba(255, 248, 240, 0.6);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   padding: 0.45rem 1rem;
   border-radius: 999px;
   cursor: pointer;
@@ -21,7 +21,7 @@
 .periodChipActive {
   background: var(--color-red);
   border-color: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
 }
 
 .error {
@@ -29,7 +29,7 @@
   margin-bottom: 1rem;
 }
 .empty {
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
@@ -41,13 +41,13 @@
 .summaryCard {
   flex: 1;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
 }
 .summaryLabel {
   font-size: 0.75rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   margin-bottom: 0.3rem;
 }
 .summaryValue {
@@ -58,7 +58,7 @@
 
 .sectionTitle {
   font-size: 0.95rem;
-  color: rgba(255, 248, 240, 0.75);
+  color: var(--color-text-muted);
   margin: 1.5rem 0 0.6rem;
 }
 
@@ -73,20 +73,20 @@
   grid-template-columns: 1fr auto auto;
   gap: 0.75rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 0.6rem 0.9rem;
   font-size: 0.85rem;
 }
 .topItemQty {
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
 }
 
 .recentRow {
   display: flex;
   justify-content: space-between;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 0.6rem 0.9rem;
   font-size: 0.85rem;

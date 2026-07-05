@@ -9,10 +9,10 @@
   --brn2: var(--color-surface-2);
   --red: var(--color-red);
   --ylw: var(--color-yellow);
-  --crm: var(--color-cream);
-  --crm2: var(--color-cream-2);
-  --line: var(--color-line);
-  --line2: var(--color-line-2);
+  --crm: var(--color-text);
+  --crm2: var(--color-text-muted);
+  --line: var(--color-border);
+  --line2: var(--color-border-strong);
   --ff: var(--font-heading);
   --fs: var(--font-body);
 }
@@ -48,7 +48,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   text-decoration: none;
   font-size: 0.65rem;
   letter-spacing: 0.15em;
@@ -89,7 +89,7 @@
 }
 .order-hero p {
   font-size: 0.8rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   line-height: 1.6;
 }
 
@@ -115,7 +115,7 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   padding: 0.75rem 1.1rem;
-  color: rgba(255, 248, 240, 0.4);
+  color: var(--color-text-muted);
   cursor: pointer;
   border: none;
   border-bottom: 2px solid transparent;
@@ -174,7 +174,7 @@
 }
 .item-desc {
   font-size: 0.72rem;
-  color: rgba(255, 248, 240, 0.42);
+  color: var(--color-text-muted);
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -242,8 +242,8 @@
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(255, 248, 240, 0.35);
-  border: 1px solid rgba(255, 248, 240, 0.15);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-text-muted);
   padding: 0.38rem 0.75rem;
   cursor: pointer;
   background: transparent;
@@ -279,7 +279,7 @@
 }
 .bottom-count {
   font-size: 0.75rem;
-  color: rgba(255, 248, 240, 0.6);
+  color: var(--color-text-muted);
 }
 .bottom-total {
   font-family: var(--ff);
@@ -341,7 +341,7 @@
 .modal-drag {
   width: 40px;
   height: 4px;
-  background: rgba(255, 248, 240, 0.2);
+  background: var(--color-text-muted);
   border-radius: 2px;
   margin: 0 auto 1.25rem;
   display: block;
@@ -354,7 +354,7 @@
 }
 .modal-subtitle {
   font-size: 0.75rem;
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   margin-bottom: 1.25rem;
 }
 
@@ -374,7 +374,7 @@
   padding: 0.25rem 0;
 }
 .recap-item span {
-  color: rgba(255, 248, 240, 0.7);
+  color: var(--color-text-muted);
 }
 .recap-item strong {
   color: var(--crm);
@@ -404,7 +404,7 @@
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   margin-bottom: 0.4rem;
   font-weight: 600;
 }
@@ -432,7 +432,7 @@
 }
 .field input::placeholder,
 .field textarea::placeholder {
-  color: rgba(255, 248, 240, 0.25);
+  color: var(--color-text-muted);
 }
 
 /* SUBMIT */
@@ -463,8 +463,8 @@
   width: 100%;
   padding: 0.75rem;
   background: transparent;
-  color: rgba(255, 248, 240, 0.4);
-  border: 1px solid rgba(255, 248, 240, 0.1);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-text-muted);
   font-family: var(--fs);
   font-size: 0.65rem;
   letter-spacing: 0.15em;
@@ -476,8 +476,8 @@
   transition: all 0.3s;
 }
 .btn-cancel:hover {
-  border-color: rgba(255, 248, 240, 0.3);
-  color: rgba(255, 248, 240, 0.7);
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
 }
 
 /* TOAST */
@@ -548,7 +548,7 @@
 }
 .success-sub {
   font-size: 0.85rem;
-  color: rgba(255, 248, 240, 0.6);
+  color: var(--color-text-muted);
   line-height: 1.7;
   margin-bottom: 2rem;
   max-width: 320px;
@@ -580,8 +580,8 @@
   align-items: center;
   justify-content: center;
   padding: 0.8rem 2rem;
-  border: 1px solid rgba(255, 248, 240, 0.2);
-  color: rgba(255, 248, 240, 0.5);
+  border: 1px solid var(--color-text-muted);
+  color: var(--color-text-muted);
   text-decoration: none;
   font-size: 0.65rem;
   letter-spacing: 0.18em;
