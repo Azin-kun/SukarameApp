@@ -44,11 +44,13 @@
   font-size: 0.85rem;
   transition:
     background 0.15s,
-    color 0.15s;
+    color 0.15s,
+    transform 0.15s ease;
 }
 .navLink:hover {
   background: var(--color-surface-2);
   color: var(--color-text);
+  transform: translateX(3px);
 }
 .navLinkActive {
   background: var(--color-red);
@@ -106,10 +108,15 @@
   cursor: pointer;
   flex-shrink: 0;
   white-space: nowrap;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
 }
 .logoutBtn:hover {
   border-color: var(--color-red);
-  color: var(--color-text);
+  color: var(--color-red);
+  background: var(--color-red-tint);
 }
 
 .content {
@@ -127,7 +134,7 @@
     z-index: 400;
     transform: translateX(-100%);
     transition: transform 0.25s ease;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
   }
   .sidebarOpen {
     transform: translateX(0);
