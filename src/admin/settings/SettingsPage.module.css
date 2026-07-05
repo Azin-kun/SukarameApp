@@ -1,26 +1,32 @@
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1rem;
 }
 
 .tabs {
   display: flex;
   gap: 0.5rem;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: 1.25rem;
 }
 .tab {
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   padding: 0.6rem 1rem;
   cursor: pointer;
   font-size: 0.85rem;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.tab:hover {
+  color: var(--color-text);
 }
 .tabActive {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   border-color: var(--color-red);
 }
 
@@ -30,7 +36,7 @@
 
 .profileCard {
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.1rem;
   margin-bottom: 1rem;
@@ -40,7 +46,7 @@
   font-size: 1.05rem;
 }
 .profilePhone {
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   font-size: 0.8rem;
   margin-top: 0.2rem;
 }
@@ -50,25 +56,29 @@
   width: 100%;
   text-align: left;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.8rem 1rem;
   border-radius: 6px;
   margin-bottom: 0.5rem;
   cursor: pointer;
   font-size: 0.9rem;
+  transition:
+    border-color 0.15s,
+    transform 0.15s ease;
 }
 .actionRow:hover {
   border-color: var(--color-yellow);
+  transform: translateX(3px);
 }
 .logoutRow {
-  color: var(--color-red-light);
+  color: var(--color-red);
 }
 
 .footerNote {
   margin-top: 1.5rem;
   font-size: 0.7rem;
-  color: rgba(255, 248, 240, 0.35);
+  color: var(--color-text-muted);
 }
 
 .overlay {
@@ -100,14 +110,14 @@
 }
 .field label {
   font-size: 0.7rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .field input {
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.65rem 0.85rem;
   border-radius: 6px;
   font-size: 1rem;
@@ -120,7 +130,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   font-size: 0.8rem;
   margin-bottom: 0.75rem;
 }
@@ -128,12 +138,21 @@
 .saveBtn {
   width: 100%;
   background: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
   border: none;
   padding: 0.75rem;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
+}
+.saveBtn:hover:not(:disabled) {
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 .saveBtn:disabled {
   opacity: 0.5;
@@ -142,8 +161,8 @@
 .cancelBtn {
   width: 100%;
   background: transparent;
-  border: 1px solid var(--color-line);
-  color: rgba(255, 248, 240, 0.6);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   padding: 0.65rem;
   border-radius: 6px;
   cursor: pointer;

@@ -1,6 +1,6 @@
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1rem;
 }
 
@@ -11,25 +11,33 @@
 }
 .periodChip {
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  color: rgba(255, 248, 240, 0.6);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   padding: 0.45rem 1rem;
   border-radius: 999px;
   cursor: pointer;
   font-size: 0.8rem;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.12s ease;
+}
+.periodChip:hover {
+  border-color: var(--color-yellow);
+  transform: translateY(-1px);
 }
 .periodChipActive {
   background: var(--color-red);
   border-color: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 .empty {
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
@@ -41,24 +49,31 @@
 .summaryCard {
   flex: 1;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.summaryCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 .summaryLabel {
   font-size: 0.75rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   margin-bottom: 0.3rem;
 }
 .summaryValue {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .sectionTitle {
   font-size: 0.95rem;
-  color: rgba(255, 248, 240, 0.75);
+  color: var(--color-text-muted);
   margin: 1.5rem 0 0.6rem;
 }
 
@@ -73,20 +88,20 @@
   grid-template-columns: 1fr auto auto;
   gap: 0.75rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 0.6rem 0.9rem;
   font-size: 0.85rem;
 }
 .topItemQty {
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
 }
 
 .recentRow {
   display: flex;
   justify-content: space-between;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 0.6rem 0.9rem;
   font-size: 0.85rem;

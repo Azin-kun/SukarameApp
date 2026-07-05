@@ -6,13 +6,13 @@
 }
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0;
 }
 .refreshBtn {
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.5rem 0.9rem;
   border-radius: 6px;
   cursor: pointer;
@@ -20,7 +20,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 
@@ -32,7 +32,7 @@
 
 .card {
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
   display: flex;
@@ -40,11 +40,17 @@
   gap: 0.5rem;
   align-items: flex-start;
   cursor: pointer;
-  color: var(--color-cream);
+  color: var(--color-text);
   font-family: inherit;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 .card:hover {
   border-color: var(--color-yellow);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .cardName {
@@ -53,10 +59,12 @@
 }
 .cardCapacity {
   font-size: 0.75rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
 }
 
 .badge {
+  position: relative;
+  overflow: hidden;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -64,17 +72,38 @@
   border-radius: 999px;
   font-weight: 600;
 }
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: badge-shine 2.6s ease-in-out infinite;
+}
+@keyframes badge-shine {
+  0% {
+    left: -60%;
+  }
+  50%,
+  100% {
+    left: 140%;
+  }
+}
 .badge_available {
   background: rgba(76, 175, 80, 0.18);
-  color: #4caf50;
+  color: #1b5e20;
 }
 .badge_occupied {
   background: rgba(211, 47, 47, 0.18);
-  color: var(--color-red-light);
+  /* var(--color-red) polos cuma ~3.8:1 di atas tint pink pucat ini,
+     butuh lebih gelap dari itu untuk kontras yang aman. */
+  color: var(--color-red-dark);
 }
 .badge_reserved {
   background: rgba(255, 193, 7, 0.18);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .overlay {
@@ -98,7 +127,7 @@
 }
 .sheetSubtitle {
   margin: 0 0 1rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   font-size: 0.8rem;
 }
 .statusOption {
@@ -106,8 +135,8 @@
   width: 100%;
   text-align: left;
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.7rem 0.9rem;
   border-radius: 6px;
   margin-bottom: 0.5rem;
@@ -119,5 +148,5 @@
 }
 .statusOptionActive {
   border-color: var(--color-yellow);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }

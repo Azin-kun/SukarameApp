@@ -6,13 +6,13 @@
 }
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0;
 }
 .refreshBtn {
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.5rem 0.9rem;
   border-radius: 6px;
   cursor: pointer;
@@ -20,11 +20,11 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 .empty {
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
 }
 
 .list {
@@ -38,17 +38,23 @@
   align-items: center;
   justify-content: space-between;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0.8rem 1.1rem;
   cursor: pointer;
-  color: var(--color-cream);
+  color: var(--color-text);
   font-family: inherit;
   width: 100%;
   text-align: left;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 .row:hover {
   border-color: var(--color-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .rowLeft {
@@ -74,7 +80,7 @@
 .rowStatus {
   font-size: 0.65rem;
   letter-spacing: 0.08em;
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   margin-top: 0.1rem;
 }
 
@@ -102,7 +108,7 @@
 }
 .sheetSubtitle {
   margin: 0 0 1rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   font-size: 0.75rem;
 }
 
@@ -122,18 +128,18 @@
   justify-content: space-between;
   padding-top: 0.75rem;
   margin-top: 0.75rem;
-  border-top: 1px solid var(--color-line);
+  border-top: 1px solid var(--color-border);
 }
 .totalRow strong {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .closeBtn {
   width: 100%;
   margin-top: 1.25rem;
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.7rem;
   border-radius: 6px;
   cursor: pointer;

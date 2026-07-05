@@ -6,7 +6,7 @@ export default function RequireAuth() {
   const phase = useAuthStore((s) => s.phase)
 
   if (phase === 'initial') {
-    return <p style={{ padding: '2rem', color: 'var(--color-cream)' }}>Memuat...</p>
+    return <p style={{ padding: '2rem', color: 'var(--color-text)' }}>Memuat...</p>
   }
   if (phase === 'unauthenticated') {
     return <Navigate to="/admin/login" replace />

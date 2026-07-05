@@ -2,23 +2,27 @@
   min-height: 100vh;
   display: flex;
   background: var(--color-bg);
-  color: var(--color-cream);
+  color: var(--color-text);
 }
 
 .sidebar {
   width: 220px;
   flex-shrink: 0;
   background: var(--color-surface);
-  border-right: 1px solid var(--color-line);
+  border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
 }
 
+.backdrop {
+  display: none;
+}
+
 .brand {
   padding: 1.4rem 1.2rem;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-border);
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   font-weight: 700;
 }
 
@@ -35,20 +39,33 @@
   display: block;
   padding: 0.65rem 0.8rem;
   border-radius: 6px;
-  color: rgba(255, 248, 240, 0.65);
+  color: var(--color-text-muted);
   text-decoration: none;
   font-size: 0.85rem;
   transition:
     background 0.15s,
-    color 0.15s;
+    color 0.15s,
+    transform 0.15s ease;
 }
 .navLink:hover {
   background: var(--color-surface-2);
-  color: var(--color-cream);
+  color: var(--color-text);
+  transform: translateX(3px);
 }
 .navLinkActive {
   background: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
+}
+/* .navLink:hover (di atas) & .navLinkActive sama-sama satu class, jadi
+   spesifisitasnya sama-sama menang lewat urutan — tapi .navLink:hover
+   (class+pseudo-class) sebenarnya LEBIH spesifik dari .navLinkActive
+   (satu class saja), jadi tanpa rule ini nav aktif akan balik abu-abu
+   saat di-hover. Rule ini menegaskan kembali merah+terang saat halaman
+   aktif di-hover. */
+.navLinkActive:hover {
+  background: var(--color-red);
+  color: var(--photo-text);
+  transform: translateX(3px);
 }
 
 .main {
@@ -62,33 +79,94 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.menuBtn {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .greeting {
+  flex: 1;
+  min-width: 0;
   font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .greeting strong {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .logoutBtn {
   background: transparent;
-  border: 1px solid var(--color-line);
-  color: rgba(255, 248, 240, 0.7);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   padding: 0.45rem 0.9rem;
   border-radius: 4px;
   font-size: 0.75rem;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
 }
 .logoutBtn:hover {
   border-color: var(--color-red);
-  color: var(--color-cream);
+  color: var(--color-red);
+  background: var(--color-red-tint);
 }
 
 .content {
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
+  min-width: 0;
+}
+
+/* Mobile: sidebar jadi off-canvas drawer, dipicu tombol hamburger di topbar */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 400;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  }
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 390;
+  }
+  .menuBtn {
+    display: block;
+  }
+  .topbar {
+    padding: 0.85rem 1rem;
+  }
+  .greeting {
+    font-size: 0.85rem;
+  }
+  .content {
+    padding: 1rem;
+  }
 }

@@ -11,12 +11,36 @@
   --ylw: var(--color-yellow);
   --ylw2: var(--color-yellow-light);
   --ylw3: var(--color-yellow-tint);
-  --crm: var(--color-cream);
-  --crm2: var(--color-cream-2);
-  --line: var(--color-line);
-  --line2: var(--color-line-2);
+  /* --ylw-txt: khusus teks (bukan border/bg) yang pakai warna kuning-emas.
+     Default gelap (aman di atas putih); dipaksa balik terang di bawah
+     untuk elemen yang backdrop-nya selalu gelap. --ylw sendiri (untuk
+     border/bg/dekorasi) TIDAK berubah. */
+  --ylw-txt: var(--color-yellow-text);
+  --crm: var(--color-text);
+  --crm2: var(--color-text-muted);
+  --line: var(--color-border);
+  --line2: var(--color-border-strong);
   --ff: var(--font-heading);
   --fs: var(--font-body);
+}
+
+/* Elemen yang SELALU di atas backdrop gelap (foto atau nav gelap
+   translucent), terlepas dari section apa yang aktif — --crm dipaksa
+   tetap krem terang di sini, TIDAK ikut tema umum. .lb = lightbox foto
+   (background-nya sendiri hardcode gelap, sama seperti .nav).
+   CATATAN: .sec-sig SENGAJA TIDAK di sini — meski namanya "photo
+   section", teksnya (.sig-text) sebenarnya duduk di kolom terpisah
+   dengan background .sig-dark (var(--brn2), terang di tema baru),
+   BUKAN di atas foto langsung seperti Hero/Carousel — ditemukan &
+   diperbaiki 2026-07-05 (sempat salah masuk daftar ini sejak Fase
+   awal, bikin teks nyaris tak kelihatan di atas bg terang). */
+.sec-hero,
+.sec-carousel,
+.nav,
+.halal-footer,
+.lb {
+  --crm: var(--photo-text);
+  --ylw-txt: var(--color-yellow);
 }
 
 .home-page,
@@ -138,7 +162,7 @@ html {
   font-weight: 600;
 }
 .nav-brand:hover .nav-brand-name {
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .nav-links {
   display: flex;
@@ -158,7 +182,7 @@ html {
   cursor: pointer;
 }
 .nav-links a:hover {
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .nav-wa {
   font-size: 0.65rem;
@@ -244,7 +268,7 @@ html {
   font-size: 0.6rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 1.6rem;
   opacity: 0;
   transform: translateY(16px);
@@ -271,7 +295,7 @@ html {
 .hero-title em {
   font-style: italic;
   font-weight: 400;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .hero-sub {
   font-size: 0.84rem;
@@ -306,11 +330,21 @@ html {
   color: var(--crm);
   text-decoration: none;
   font-weight: 700;
-  transition: all 0.3s;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 .btn-solid:hover {
-  background: var(--ylw);
-  color: var(--esp);
+  background: var(--color-red-dark);
+  color: var(--crm);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
+}
+.btn-solid:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 2px 6px rgba(211, 47, 47, 0.25);
 }
 .btn-outline {
   font-size: 0.65rem;
@@ -326,7 +360,7 @@ html {
 }
 .btn-outline:hover {
   border-color: var(--ylw);
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .btn-fullmenu-mobile {
   display: none;
@@ -374,7 +408,7 @@ html {
   font-size: 0.55rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 1.4rem;
   display: flex;
   align-items: center;
@@ -448,11 +482,11 @@ html {
 .story-title em {
   font-style: italic;
   font-weight: 400;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .story-body {
   font-size: 0.88rem;
-  color: rgba(255, 248, 240, 0.65);
+  color: var(--color-text-muted);
   line-height: 1.9;
   max-width: 400px;
   opacity: 0;
@@ -481,7 +515,7 @@ html {
   font-size: 0.6rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 248, 240, 0.45);
+  color: var(--color-text-muted);
   margin-top: 0.3rem;
 }
 .active .ch-label,
@@ -558,7 +592,7 @@ html {
 .sig-price {
   font-family: var(--ff);
   font-size: 1.6rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   font-weight: 600;
   margin-bottom: 1.2rem;
   opacity: 0;
@@ -581,11 +615,11 @@ html {
 }
 .sig-name em {
   font-style: italic;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .sig-desc {
   font-size: 0.85rem;
-  color: rgba(255, 248, 240, 0.62);
+  color: var(--color-text-muted);
   line-height: 1.8;
   margin-bottom: 2rem;
   max-width: 360px;
@@ -614,7 +648,7 @@ html {
     border-color 0.3s;
 }
 .sig-wa:hover {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   border-color: var(--ylw);
 }
 .active .sig-price,
@@ -660,7 +694,7 @@ html {
 }
 .car-title em {
   font-style: italic;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .car-track {
   display: flex;
@@ -709,7 +743,7 @@ html {
   font-size: 0.6rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 0.6rem;
 }
 .car-dish-name {
@@ -730,7 +764,7 @@ html {
 .car-dish-price {
   font-family: var(--ff);
   font-size: 1.8rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   font-weight: 600;
   white-space: nowrap;
   margin-left: 2rem;
@@ -825,7 +859,7 @@ html {
   font-size: 0.58rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 0.8rem;
 }
 .menu-hd-title {
@@ -856,7 +890,7 @@ html {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 0.8rem 1.4rem;
-  color: rgba(255, 248, 240, 0.45);
+  color: var(--color-text-muted);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   white-space: nowrap;
@@ -872,7 +906,7 @@ html {
   font-family: var(--fs);
 }
 .menu-tab.on {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   border-color: var(--red);
 }
 .menu-pane {
@@ -902,10 +936,15 @@ html {
   grid-template-columns: 100px 1fr;
   gap: 1rem;
   align-items: start;
-  transition: background 0.3s;
+  transition:
+    background 0.3s,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .menu-item:hover {
-  background: rgba(93, 32, 0, 0.8);
+  background: var(--color-surface-2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 .mi-photo {
   width: 100px;
@@ -933,7 +972,7 @@ html {
 }
 .mi-desc {
   font-size: 0.72rem;
-  color: rgba(255, 248, 240, 0.52);
+  color: var(--color-text-muted);
   line-height: 1.6;
 }
 .mi-foot {
@@ -945,20 +984,20 @@ html {
 .mi-price {
   font-family: var(--ff);
   font-size: 1.1rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .mi-order {
   font-size: 0.58rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 248, 240, 0.4);
+  color: var(--color-text-muted);
   text-decoration: none;
   border: 1px solid var(--line);
   padding: 0.3rem 0.7rem;
   transition: all 0.3s;
 }
 .mi-order:hover {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   border-color: var(--ylw);
 }
 .drinks-grid {
@@ -970,7 +1009,7 @@ html {
 .drink-cat-name {
   font-family: var(--ff);
   font-size: 1.4rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 0.8rem;
   border-bottom: 1px solid var(--line);
   padding-bottom: 0.5rem;
@@ -983,10 +1022,10 @@ html {
   font-size: 0.8rem;
 }
 .drink-row span {
-  color: rgba(255, 248, 240, 0.7);
+  color: var(--color-text-muted);
 }
 .drink-row strong {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   font-weight: 500;
 }
 
@@ -1066,7 +1105,9 @@ html {
   font-size: 0.58rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--crm);
+  /* Section Lokasi bukan photo-section (--crm gelap di sini) tapi pin ini
+     background-nya solid merah, jadi teksnya perlu tetap terang. */
+  color: var(--photo-text);
   background: var(--red);
   padding: 0.4rem 0.9rem;
   font-weight: 700;
@@ -1079,7 +1120,7 @@ html {
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   text-decoration: none;
   border: 1px solid var(--line2);
   padding: 0.48rem 1rem;
@@ -1089,7 +1130,7 @@ html {
 }
 .btn-directions:hover {
   background: var(--ylw);
-  color: var(--esp);
+  color: var(--crm);
   border-color: var(--ylw);
 }
 .loc-title {
@@ -1107,7 +1148,7 @@ html {
 }
 .loc-title em {
   font-style: italic;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .loc-row {
   margin-bottom: 0.85rem;
@@ -1127,12 +1168,12 @@ html {
   font-size: 0.55rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 0.22rem;
 }
 .loc-val {
   font-size: 0.8rem;
-  color: rgba(255, 248, 240, 0.65);
+  color: var(--color-text-muted);
   line-height: 1.55;
 }
 .loc-badges {
@@ -1146,7 +1187,7 @@ html {
   text-transform: uppercase;
   border: 1px solid var(--line);
   padding: 0.3rem 0.7rem;
-  color: rgba(255, 248, 240, 0.45);
+  color: var(--color-text-muted);
 }
 .active .loc-title,
 .active .loc-row {
@@ -1232,21 +1273,42 @@ html {
   font-size: 0.7rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   white-space: nowrap;
 }
 
 /* BADGE */
 .badge {
   display: inline-block;
+  position: relative;
+  overflow: hidden;
   font-size: 0.52rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   border: 1px solid rgba(211, 47, 47, 0.5);
   background: rgba(211, 47, 47, 0.12);
-  color: #ff7070;
+  color: var(--color-red-dark);
   padding: 0.25rem 0.65rem;
   margin-bottom: 0.5rem;
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: badge-shine 2.6s ease-in-out infinite;
+}
+@keyframes badge-shine {
+  0% {
+    left: -60%;
+  }
+  50%,
+  100% {
+    left: 140%;
+  }
 }
 
 /* FOOTER */
@@ -1260,10 +1322,10 @@ html {
   font-size: 0.55rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 248, 240, 0.3);
+  color: var(--color-text-muted);
 }
 .foot-strip a {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   text-decoration: none;
 }
 .halal-footer {
@@ -1276,7 +1338,8 @@ html {
   text-transform: uppercase;
   color: var(--crm);
   font-weight: 700;
-  background: transparent;
+  background: rgba(26, 10, 0, 0.75);
+  backdrop-filter: blur(4px);
   border: 1px solid var(--ylw);
   padding: 0.38rem 0.7rem;
   box-shadow: none;
@@ -1299,13 +1362,13 @@ html {
 .info-title {
   font-family: var(--ff);
   font-size: 1.45rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   margin-bottom: 0.55rem;
   font-weight: 600;
 }
 .info-copy {
   font-size: 0.78rem;
-  color: rgba(255, 248, 240, 0.62);
+  color: var(--color-text-muted);
   line-height: 1.75;
 }
 .social-row {
@@ -1658,6 +1721,10 @@ html {
     margin-right: -1.35rem;
     padding-left: 1.35rem;
     box-shadow: 0 18px 28px rgba(26, 10, 0, 0.22);
+    /* Bar ini sengaja tetap gelap di mobile (sticky di atas konten saat
+       scroll) — teks tab non-aktif perlu tetap terang di sini, override
+       --color-text-muted (abu-abu, dimaksudkan untuk bg putih). */
+    --color-text-muted: rgba(255, 248, 240, 0.6);
   }
   .menu-tab {
     font-size: 0.54rem;

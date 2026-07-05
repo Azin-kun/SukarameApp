@@ -495,7 +495,7 @@ export default function HomePage() {
                       <br />
                       <strong style={{ color: 'var(--crm)' }}>07.00 – 18.00 WIB</strong>
                       <br />
-                      <span style={{ color: 'rgba(255,248,240,.4)', fontSize: '.7rem' }}>(atau sampai habis)</span>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '.7rem' }}>(atau sampai habis)</span>
                     </>
                   )}
                 </div>

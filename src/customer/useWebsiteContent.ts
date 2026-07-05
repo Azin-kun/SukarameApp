@@ -89,9 +89,9 @@ export function themeToCssVars(theme: WebsiteThemeColors | null): Record<string,
     '--color-surface-2': theme.colorSurface2,
     '--color-red': theme.colorPrimary,
     '--color-red-light': theme.colorPrimary2,
-    '--color-cream': theme.colorText,
-    '--color-cream-2': theme.colorTextMuted,
-    '--color-line': theme.colorLine,
+    '--color-text': theme.colorText,
+    '--color-text-muted': theme.colorTextMuted,
+    '--color-border': theme.colorLine,
     '--color-yellow': theme.colorTertiary,
   }
   return Object.fromEntries(Object.entries(map).filter(([, v]) => !!v)) as Record<string, string>

@@ -4,13 +4,13 @@
 
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1.25rem;
 }
 
 .sectionTitle {
   font-size: 0.9rem;
-  color: rgba(255, 248, 240, 0.7);
+  color: var(--color-text-muted);
   margin: 1.25rem 0 0.6rem;
 }
 
@@ -31,11 +31,11 @@
   justify-content: space-between;
   padding-top: 0.75rem;
   margin-top: 0.75rem;
-  border-top: 1px solid var(--color-line);
+  border-top: 1px solid var(--color-border);
   font-size: 1.1rem;
 }
 .totalRow strong {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .methods {
@@ -50,10 +50,17 @@
   gap: 0.6rem;
   padding: 0.6rem 0.8rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.85rem;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.methodOption:hover {
+  border-color: var(--color-yellow);
+  background: var(--color-yellow-tint);
 }
 
 .cashField {
@@ -64,12 +71,12 @@
 }
 .cashField label {
   font-size: 0.75rem;
-  color: rgba(255, 248, 240, 0.6);
+  color: var(--color-text-muted);
 }
 .cashField input {
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.7rem 0.9rem;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -85,11 +92,11 @@
   font-size: 0.85rem;
 }
 .changeRow strong {
-  color: #4caf50;
+  color: #2e7d32;
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   font-size: 0.85rem;
   margin-top: 0.75rem;
 }
@@ -98,16 +105,21 @@
   width: 100%;
   margin-top: 1.5rem;
   background: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
   border: none;
   padding: 0.9rem;
   border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
 }
 .payBtn:hover:not(:disabled) {
-  background: var(--color-yellow);
-  color: var(--color-bg);
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 .payBtn:disabled {
   opacity: 0.6;

@@ -19,6 +19,9 @@ dist-ssr
 assets/img/hero.png
 assets/img/mie ayam*.png
 
+# Brainstorming visual companion (mockup scratch files, bukan bagian app)
+.superpowers/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

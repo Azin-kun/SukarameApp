@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuthStore } from './auth/authStore'
 import styles from './AdminLayout.module.css'
@@ -18,10 +19,13 @@ const NAV_ITEMS = [
 export default function AdminLayout() {
   const profile = useAuthStore((s) => s.profile)
   const signOut = useAuthStore((s) => s.signOut)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className={styles.shell}>
-      <aside className={styles.sidebar}>
+      {sidebarOpen && <div className={styles.backdrop} onClick={() => setSidebarOpen(false)} />}
+
+      <aside className={`${styles.sidebar}${sidebarOpen ? ` ${styles.sidebarOpen}` : ''}`}>
         <div className={styles.brand}>Sukarame Admin</div>
         <nav className={styles.nav}>
           {NAV_ITEMS.map((item) => (
@@ -29,6 +33,7 @@ export default function AdminLayout() {
               key={item.to}
               to={item.to}
               end={item.end}
+              onClick={() => setSidebarOpen(false)}
               className={({ isActive }) => `${styles.navLink}${isActive ? ` ${styles.navLinkActive}` : ''}`}
             >
               {item.label}
@@ -39,6 +44,13 @@ export default function AdminLayout() {
 
       <div className={styles.main}>
         <header className={styles.topbar}>
+          <button
+            className={styles.menuBtn}
+            aria-label="Buka menu"
+            onClick={() => setSidebarOpen((v) => !v)}
+          >
+            ☰
+          </button>
           <span className={styles.greeting}>
             Halo, <strong>{profile?.displayName ?? 'Staff'}</strong>
           </span>

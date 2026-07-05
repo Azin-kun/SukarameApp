@@ -1,15 +1,15 @@
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 .saved {
-  color: #4caf50;
+  color: #2e7d32;
   margin-bottom: 1rem;
 }
 
 .groupTitle {
   font-size: 1rem;
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   font-family: var(--font-heading);
   margin: 1.5rem 0 0.4rem;
 }
@@ -18,7 +18,7 @@
 }
 .hint {
   font-size: 0.8rem;
-  color: rgba(255, 248, 240, 0.5);
+  color: var(--color-text-muted);
   margin: 0 0 1rem;
 }
 
@@ -31,16 +31,21 @@
 .sectionCard,
 .themeCard {
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.1rem;
   max-width: 520px;
+  transition: box-shadow 0.2s ease;
+}
+.sectionCard:hover,
+.themeCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 .sectionKey {
   display: inline-block;
   background: var(--color-surface-2);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -55,18 +60,19 @@
   flex-direction: column;
   gap: 0.3rem;
   margin-bottom: 0.85rem;
+  min-width: 0;
 }
 .field label {
   font-size: 0.7rem;
-  color: rgba(255, 248, 240, 0.55);
+  color: var(--color-text-muted);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .field input,
 .field textarea {
   background: var(--color-surface-2);
-  border: 1px solid var(--color-line);
-  color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
   font-size: 0.85rem;
@@ -84,24 +90,29 @@
   font-size: 0.78rem;
 }
 .fieldError {
-  color: var(--color-red-light);
+  color: var(--color-red);
   font-size: 0.75rem;
   margin-top: 0.3rem;
 }
 
 .saveBtn {
   background: var(--color-red);
-  color: var(--color-cream);
+  color: var(--photo-text);
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   font-size: 0.85rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
 }
 .saveBtn:hover {
-  background: var(--color-yellow);
-  color: var(--color-bg);
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 
 .themeGrid {
@@ -115,13 +126,27 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: 0;
 }
 .swatch {
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+.swatch:hover {
+  transform: scale(1.15);
+}
+.colorRow input {
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .themeGrid {
+    grid-template-columns: 1fr;
+  }
 }
 .colorRow input {
   flex: 1;
