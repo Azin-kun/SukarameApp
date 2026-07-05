@@ -1,10 +1,10 @@
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1rem;
 }
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 
@@ -33,7 +33,7 @@
   position: relative;
   overflow: hidden;
   background: rgba(76, 175, 80, 0.18);
-  color: #4caf50;
+  color: #2e7d32;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -72,7 +72,7 @@
   color: #4caf50;
 }
 .diffNegative {
-  color: var(--color-red-light);
+  color: var(--color-red);
 }
 
 .openBtn {

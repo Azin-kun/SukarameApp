@@ -9,12 +9,25 @@
   --brn2: var(--color-surface-2);
   --red: var(--color-red);
   --ylw: var(--color-yellow);
+  /* --ylw-txt: khusus teks (bukan border/bg) yang pakai warna kuning-emas.
+     Default gelap (aman di atas putih); dipaksa balik terang di
+     .order-nav/.cat-tabs (lihat di bawah) karena backdrop-nya selalu
+     gelap. --ylw sendiri (untuk border/bg/dekorasi) TIDAK berubah. */
+  --ylw-txt: var(--color-yellow-text);
   --crm: var(--color-text);
   --crm2: var(--color-text-muted);
   --line: var(--color-border);
   --line2: var(--color-border-strong);
   --ff: var(--font-heading);
   --fs: var(--font-body);
+}
+
+/* .order-nav & .cat-tabs backdrop-nya selalu gelap (hardcode) — --ylw-txt
+   dipaksa balik terang di sini, sama seperti perlakuan --crm/nav di
+   HomePage.css. */
+.order-nav,
+.cat-tabs {
+  --ylw-txt: var(--color-yellow);
 }
 
 .order-page,
@@ -59,7 +72,7 @@
   transition: color 0.3s;
 }
 .nav-back:hover {
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .order-nav-brand {
   font-family: var(--ff);
@@ -87,7 +100,7 @@
 }
 .order-hero h1 em {
   font-style: italic;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .order-hero p {
   font-size: 0.8rem;
@@ -133,7 +146,7 @@
   margin-bottom: -1px;
 }
 .cat-tab.on {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   border-color: var(--red);
 }
 
@@ -145,7 +158,7 @@
   font-family: var(--ff);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   padding: 0 1.5rem;
   margin-bottom: 0.75rem;
 }
@@ -192,7 +205,7 @@
 .item-price {
   font-family: var(--ff);
   font-size: 1rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   font-weight: 600;
   margin-top: 0.25rem;
 }
@@ -237,7 +250,7 @@
 }
 .qty-btn.plus {
   background: rgba(255, 193, 7, 0.2);
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .qty-btn.plus:hover {
   background: var(--ylw);
@@ -270,7 +283,7 @@
 }
 .qty-add:hover {
   border-color: var(--ylw);
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 
 /* STICKY BOTTOM BAR */
@@ -301,7 +314,7 @@
 .bottom-total {
   font-family: var(--ff);
   font-size: 1.3rem;
-  color: var(--ylw);
+  color: var(--ylw-txt);
   font-weight: 700;
 }
 .btn-pesan {
@@ -417,7 +430,7 @@
   font-weight: 700;
 }
 .recap-total-val {
-  color: var(--ylw);
+  color: var(--ylw-txt);
   font-family: var(--ff);
 }
 
@@ -578,7 +591,7 @@
 }
 .success-title em {
   font-style: italic;
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 .success-sub {
   font-size: 0.85rem;
@@ -627,7 +640,7 @@
 }
 .btn-back-home:hover {
   border-color: var(--ylw);
-  color: var(--ylw);
+  color: var(--ylw-txt);
 }
 
 @media (min-width: 600px) {

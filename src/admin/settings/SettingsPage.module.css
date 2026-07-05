@@ -1,6 +1,6 @@
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1rem;
 }
 
@@ -26,7 +26,7 @@
   color: var(--color-text);
 }
 .tabActive {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   border-color: var(--color-red);
 }
 
@@ -72,7 +72,7 @@
   transform: translateX(3px);
 }
 .logoutRow {
-  color: var(--color-red-light);
+  color: var(--color-red);
 }
 
 .footerNote {
@@ -130,7 +130,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   font-size: 0.8rem;
   margin-bottom: 0.75rem;
 }

@@ -13,7 +13,7 @@
 
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0;
 }
 
@@ -49,7 +49,7 @@
   white-space: nowrap;
 }
 .tabActive {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   border-color: var(--color-red);
 }
 
@@ -87,7 +87,7 @@
   font-weight: 600;
 }
 .tilePrice {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   font-size: 0.85rem;
 }
 
@@ -208,7 +208,7 @@
   margin-top: 0.75rem;
 }
 .sheetTotal strong {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .payBtn {

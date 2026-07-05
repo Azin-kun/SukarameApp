@@ -22,7 +22,7 @@
   padding: 1.4rem 1.2rem;
   border-bottom: 1px solid var(--color-border);
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   font-weight: 700;
 }
 
@@ -106,7 +106,7 @@
   white-space: nowrap;
 }
 .greeting strong {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .logoutBtn {

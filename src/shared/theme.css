@@ -16,6 +16,11 @@
   --color-yellow: #ffc107;
   --color-yellow-light: #ffd54f;
   --color-yellow-tint: rgba(255, 193, 7, 0.12);
+  /* Varian gelap khusus TEKS (bukan background/border) — --color-yellow
+     asli kontrasnya jelek (~1.6:1) kalau dipakai sebagai warna teks di
+     atas putih (dulu aman karena bg gelap). Dipakai lewat alias
+     --ylw-txt di HomePage.css/OrderPage.css dan langsung di admin. */
+  --color-yellow-text: #8a6d00;
 
   --color-text: #1a1a1a;
   --color-text-muted: #6b6b6b;

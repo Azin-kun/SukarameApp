@@ -1,6 +1,6 @@
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1rem;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 .empty {
@@ -68,7 +68,7 @@
 .summaryValue {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .sectionTitle {

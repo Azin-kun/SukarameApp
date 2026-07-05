@@ -62,7 +62,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   font-size: 0.85rem;
 }
 

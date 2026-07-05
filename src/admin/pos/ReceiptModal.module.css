@@ -61,7 +61,7 @@
 }
 .receiptTotal {
   font-weight: 700;
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .actions {

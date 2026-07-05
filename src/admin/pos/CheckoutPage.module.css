@@ -4,7 +4,7 @@
 
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0 0 1.25rem;
 }
 
@@ -35,7 +35,7 @@
   font-size: 1.1rem;
 }
 .totalRow strong {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .methods {
@@ -96,7 +96,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   font-size: 0.85rem;
   margin-top: 0.75rem;
 }

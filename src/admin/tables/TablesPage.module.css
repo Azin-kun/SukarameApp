@@ -6,7 +6,7 @@
 }
 .title {
   font-family: var(--font-heading);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
   margin: 0;
 }
 .refreshBtn {
@@ -20,7 +20,7 @@
 }
 
 .error {
-  color: var(--color-red-light);
+  color: var(--color-red);
   margin-bottom: 1rem;
 }
 
@@ -93,15 +93,17 @@
 }
 .badge_available {
   background: rgba(76, 175, 80, 0.18);
-  color: #4caf50;
+  color: #2e7d32;
 }
 .badge_occupied {
   background: rgba(211, 47, 47, 0.18);
-  color: var(--color-red-light);
+  /* var(--color-red) polos cuma ~3.8:1 di atas tint pink pucat ini,
+     butuh lebih gelap dari itu untuk kontras yang aman. */
+  color: var(--color-red-dark);
 }
 .badge_reserved {
   background: rgba(255, 193, 7, 0.18);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .overlay {
@@ -146,5 +148,5 @@
 }
 .statusOptionActive {
   border-color: var(--color-yellow);
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
