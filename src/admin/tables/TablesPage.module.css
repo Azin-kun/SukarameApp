@@ -42,9 +42,15 @@
   cursor: pointer;
   color: var(--color-text);
   font-family: inherit;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 .card:hover {
   border-color: var(--color-yellow);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .cardName {
@@ -57,12 +63,33 @@
 }
 
 .badge {
+  position: relative;
+  overflow: hidden;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
   font-weight: 600;
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: badge-shine 2.6s ease-in-out infinite;
+}
+@keyframes badge-shine {
+  0% {
+    left: -60%;
+  }
+  50%,
+  100% {
+    left: 140%;
+  }
 }
 .badge_available {
   background: rgba(76, 175, 80, 0.18);
