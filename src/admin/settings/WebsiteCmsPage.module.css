@@ -35,6 +35,11 @@
   border-radius: 8px;
   padding: 1.1rem;
   max-width: 520px;
+  transition: box-shadow 0.2s ease;
+}
+.sectionCard:hover,
+.themeCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 .sectionKey {
@@ -99,10 +104,15 @@
   font-weight: 600;
   cursor: pointer;
   font-size: 0.85rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
 }
 .saveBtn:hover {
-  background: var(--color-yellow);
-  color: var(--color-text);
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 
 .themeGrid {
@@ -124,6 +134,10 @@
   border-radius: 4px;
   border: 1px solid var(--color-border);
   flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+.swatch:hover {
+  transform: scale(1.15);
 }
 .colorRow input {
   min-width: 0;
