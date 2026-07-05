@@ -56,6 +56,17 @@
   background: var(--color-red);
   color: var(--photo-text);
 }
+/* .navLink:hover (di atas) & .navLinkActive sama-sama satu class, jadi
+   spesifisitasnya sama-sama menang lewat urutan — tapi .navLink:hover
+   (class+pseudo-class) sebenarnya LEBIH spesifik dari .navLinkActive
+   (satu class saja), jadi tanpa rule ini nav aktif akan balik abu-abu
+   saat di-hover. Rule ini menegaskan kembali merah+terang saat halaman
+   aktif di-hover. */
+.navLinkActive:hover {
+  background: var(--color-red);
+  color: var(--photo-text);
+  transform: translateX(3px);
+}
 
 .main {
   flex: 1;
