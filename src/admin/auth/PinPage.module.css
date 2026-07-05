@@ -52,9 +52,13 @@
   border-radius: 50%;
   border: 2px solid var(--color-yellow);
   background: transparent;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
 }
 .dotFilled {
   background: var(--color-yellow);
+  transform: scale(1.1);
 }
 
 .error {
@@ -83,8 +87,15 @@
   padding: 1rem 0;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background 0.15s,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
 }
 .key:hover {
   background: var(--color-surface-2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+.key:active {
+  transform: scale(0.94);
 }
