@@ -317,11 +317,21 @@ html {
   color: var(--crm);
   text-decoration: none;
   font-weight: 700;
-  transition: all 0.3s;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 .btn-solid:hover {
-  background: var(--ylw);
-  color: var(--esp);
+  background: var(--color-red-dark);
+  color: var(--crm);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
+}
+.btn-solid:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 2px 6px rgba(211, 47, 47, 0.25);
 }
 .btn-outline {
   font-size: 0.65rem;
@@ -913,10 +923,15 @@ html {
   grid-template-columns: 100px 1fr;
   gap: 1rem;
   align-items: start;
-  transition: background 0.3s;
+  transition:
+    background 0.3s,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .menu-item:hover {
-  background: rgba(93, 32, 0, 0.8);
+  background: var(--color-surface-2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 .mi-photo {
   width: 100px;
@@ -1100,7 +1115,7 @@ html {
 }
 .btn-directions:hover {
   background: var(--ylw);
-  color: var(--esp);
+  color: var(--crm);
   border-color: var(--ylw);
 }
 .loc-title {
@@ -1250,6 +1265,8 @@ html {
 /* BADGE */
 .badge {
   display: inline-block;
+  position: relative;
+  overflow: hidden;
   font-size: 0.52rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1258,6 +1275,25 @@ html {
   color: #ff7070;
   padding: 0.25rem 0.65rem;
   margin-bottom: 0.5rem;
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: badge-shine 2.6s ease-in-out infinite;
+}
+@keyframes badge-shine {
+  0% {
+    left: -60%;
+  }
+  50%,
+  100% {
+    left: 140%;
+  }
 }
 
 /* FOOTER */
