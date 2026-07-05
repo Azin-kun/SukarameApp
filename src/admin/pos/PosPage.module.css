@@ -67,6 +67,15 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0.9rem 1.1rem;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+.tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-yellow);
 }
 
 .tileInfo {
@@ -98,9 +107,16 @@
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    border-color 0.15s,
+    transform 0.12s ease;
 }
 .qtyBtn:hover {
   border-color: var(--color-yellow);
+  transform: scale(1.1);
+}
+.qtyBtn:active {
+  transform: scale(0.9);
 }
 .qtyNum {
   min-width: 1.2rem;
@@ -120,10 +136,15 @@
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
 }
 .fab:hover {
-  background: var(--color-yellow);
-  color: var(--color-text);
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .overlay {
@@ -198,6 +219,15 @@
   border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
+}
+.payBtn:hover:not(:disabled) {
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 .payBtn:disabled {
   opacity: 0.5;

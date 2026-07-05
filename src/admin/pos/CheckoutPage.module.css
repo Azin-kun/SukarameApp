@@ -54,6 +54,13 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.85rem;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.methodOption:hover {
+  border-color: var(--color-yellow);
+  background: var(--color-yellow-tint);
 }
 
 .cashField {
@@ -104,10 +111,15 @@
   border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease;
 }
 .payBtn:hover:not(:disabled) {
-  background: var(--color-yellow);
-  color: var(--color-text);
+  background: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);
 }
 .payBtn:disabled {
   opacity: 0.6;
