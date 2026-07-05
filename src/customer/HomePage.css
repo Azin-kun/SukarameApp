@@ -21,12 +21,14 @@
 
 /* Elemen yang SELALU di atas backdrop gelap (foto atau nav gelap
    translucent), terlepas dari section apa yang aktif — --crm dipaksa
-   tetap krem terang di sini, TIDAK ikut tema umum. */
+   tetap krem terang di sini, TIDAK ikut tema umum. .lb = lightbox foto
+   (background-nya sendiri hardcode gelap, sama seperti .nav). */
 .sec-hero,
 .sec-sig,
 .sec-carousel,
 .nav,
-.halal-footer {
+.halal-footer,
+.lb {
   --crm: var(--photo-text);
 }
 
@@ -1092,7 +1094,9 @@ html {
   font-size: 0.58rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--crm);
+  /* Section Lokasi bukan photo-section (--crm gelap di sini) tapi pin ini
+     background-nya solid merah, jadi teksnya perlu tetap terang. */
+  color: var(--photo-text);
   background: var(--red);
   padding: 0.4rem 0.9rem;
   font-weight: 700;
@@ -1706,6 +1710,10 @@ html {
     margin-right: -1.35rem;
     padding-left: 1.35rem;
     box-shadow: 0 18px 28px rgba(26, 10, 0, 0.22);
+    /* Bar ini sengaja tetap gelap di mobile (sticky di atas konten saat
+       scroll) — teks tab non-aktif perlu tetap terang di sini, override
+       --color-text-muted (abu-abu, dimaksudkan untuk bg putih). */
+    --color-text-muted: rgba(255, 248, 240, 0.6);
   }
   .menu-tab {
     font-size: 0.54rem;
